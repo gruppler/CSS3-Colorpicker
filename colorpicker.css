@@ -124,6 +124,9 @@ input.color {
 	-o-border-radius: 2px;
 	border-radius: 2px;
 }
+#css3colorpicker-div-inputContainer ul {
+	margin: 0;
+}
 #css3colorpicker-div-inputContainer li {
 	list-style: none;
 	display: block;
