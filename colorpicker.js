@@ -215,13 +215,11 @@ $.extend(Colorpicker.prototype, {
 			}).bind("getData.colorpicker", function(e, key) {
 				return $.colorpicker._get(inst, key);
 			});
-		}else{
-			input.click(function(){
-				$.colorpicker._showColorpicker(target);
-			});
 		}
 
-		input.bind("refresh", function(){
+		input.click(function(){
+			$.colorpicker._showColorpicker(target);
+		}).bind("refresh", function(){
 			var $this = $(this);
 			var inst = $.colorpicker._getInst(this);
 			$.colorpicker._setColor(inst, input.val() || input.data('color') || $.colorpicker._get(inst, 'color'), true);
