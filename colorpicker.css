@@ -109,6 +109,7 @@ input.color {
 	position: absolute;
 	bottom: 0;
 	right: 0;
+	margin: 0;
 	background: #bbb;
 	background: -moz-linear-gradient(top, #ccc 0%, #eee 50%, #ccc 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ccc), color-stop(50%,#eee), color-stop(100%,#ccc));
@@ -123,9 +124,6 @@ input.color {
 	-moz-border-radius: 2px;
 	-o-border-radius: 2px;
 	border-radius: 2px;
-}
-#css3colorpicker-div-inputContainer ul {
-	margin: 0;
 }
 #css3colorpicker-div-inputContainer li {
 	list-style: none;
