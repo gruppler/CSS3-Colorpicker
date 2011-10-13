@@ -220,12 +220,20 @@ $.extend(Colorpicker.prototype, {
 				$.colorpicker._showColorpicker(target);
 			});
 		}
+
+		input.bind("refresh", function(){
+			var $this = $(this);
+			var inst = $.colorpicker._getInst(this);
+			$.colorpicker._setColor(inst, input.val() || input.data('color') || $.colorpicker._get(inst, 'color'), true);
+			$.colorpicker._updateColorpicker();
+		});
 	},
 
 	_setColor: function(inst, hex, force){
+		if(this._isDragging) return false;
 		hex = $.colorpicker.validateHex(hex);
 		inst.settings.color = hex;
-		if(!this._isDragging) inst.color.setHex(hex);
+		inst.color.setHex(hex);
 		this._updateTarget(inst, force);
 	},
 
