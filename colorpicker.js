@@ -230,10 +230,9 @@ $.extend(Colorpicker.prototype, {
 	},
 
 	_setColor: function(inst, hex, force){
-		if(this._isDragging) return false;
 		hex = $.colorpicker.validateHex(hex);
 		inst.settings.color = hex;
-		inst.color.setHex(hex);
+		if(!this._isDragging) inst.color.setHex(hex);
 		this._updateTarget(inst, force);
 	},
 
