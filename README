@@ -28,22 +28,46 @@ OTHER DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
 Include these in your header:
-	<link rel="stylesheet" type="text/css" href="colorpicker.css"/>
-	<script type="text/javascript" src="jquery.min.js"></script>
-	<script type="text/javascript" src="colorpicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="colorpicker.css"/>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="colorpicker.js"></script>
 
 Apply to your selection:
-	$('.color').colorpicker();
-	$('#color1').colorpicker({
-		realtime: false,
-		invertControls: false,
-		controlStyle: 'raised'
-	});
+    $('.color').colorpicker();
+    $('#color1').colorpicker({
+        realtime: false,
+        invertControls: false,
+        controlStyle: 'raised'
+    });
 
 Here are the options and their defaults:
-	showAnim:	true,			// Fade in/out
-	duration:	150,			// Fade duration
-	color:		'FFF',			// Default color
-	realtime:	true,			// Update instantly
-	invertControls:	true,		// Invert color of mouse controls based on luminance
-	controlStyle:	'simple'	// Mouse control theme [simple|raised|inset]
+    showAnim:       true,       // Fade in/out
+    duration:       150,        // Fade duration
+    color:          'FFF',      // Default color
+    realtime:       true,       // Update instantly
+    invertControls: true,       // Invert color of mouse controls
+                                //   based on luminance
+    controlStyle:   'simple',   // Mouse control theme [simple|raised|inset]
+    swatches:       true        // [true|false] to enable/disable,
+                                //   or an array of hex codes to pre-fill
+
+Options can be retrieved or changed at any time:
+    // Get option's current value
+    $(".selector").colorpicker("option", "color");
+    // Set option
+    $(".selector").colorpicker("option", "color", "fff");
+
+Public methods of $.colorpicker:
+    setDefaults(settings)   // Set the defaults for all colorpickers
+    color(args)             // A useful color class
+    hexToRgb(hex)           // Returns {r:[0-255], g:[0-255], b:[0-255]}
+    validateHex(hex)        // Returns valid, normalized hex code
+    rgbToHex(rgb)           // rgb = {r:[0-255], g:[0-255], b:[0-255]}
+    intToHex(dec)           // Base conversion from 10 to 16
+    hextToInt(hex)          // Base conversion from 16 to 10
+    rgbToLum(rgb)           // rgb = {r:[0-255], g:[0-255], b:[0-255]}
+                            //   Returns integer [0-100]
+    rgbToHsv(rgb)           // rgb = {r:[0-255], g:[0-255], b:[0-255]}
+                            //   Returns {h:[0-359], s:[0-100], v:[0-100]}
+    hsvToRgb(rgb)           // hsv = {h:[0-359], s:[0-100], v:[0-100]}
+                            //   Returns {r:[0-255], g:[0-255], b:[0-255]}

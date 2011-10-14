@@ -97,7 +97,7 @@ $.extend(Colorpicker.prototype, {
 		return this;
 	},
 
-	setMode: function(mode){
+	_setMode: function(mode){
 		if(['h','s','v'].indexOf(mode) >= 0){
 			this.cpDiv.removeClass('mode-' + this.mode);
 			this.cpDiv.addClass('mode-' + mode);
@@ -128,7 +128,7 @@ $.extend(Colorpicker.prototype, {
 			this.h = newHsv.h;
 			this.s = newHsv.s;
 			this.v = newHsv.v;
-			this.l = $.colorpicker.rgbToLum(this.r, this.g, this.b);
+			this.l = $.colorpicker.rgbToLum(this);
 
 			this.hex = $.colorpicker.rgbToHex(this);
 		};
@@ -142,7 +142,7 @@ $.extend(Colorpicker.prototype, {
 			this.r = newRgb.r;
 			this.g = newRgb.g;
 			this.b = newRgb.b;
-			this.l = $.colorpicker.rgbToLum(this.r, this.g, this.b);
+			this.l = $.colorpicker.rgbToLum(this);
 
 			this.hex = $.colorpicker.rgbToHex(newRgb);
 		};
@@ -159,7 +159,7 @@ $.extend(Colorpicker.prototype, {
 			this.h = newHsv.h;
 			this.s = newHsv.s;
 			this.v = newHsv.v;
-			this.l = $.colorpicker.rgbToLum(this.r, this.g, this.b);
+			this.l = $.colorpicker.rgbToLum(this);
 		};
 
 		if(args){
@@ -270,16 +270,15 @@ $.extend(Colorpicker.prototype, {
 		if(typeof name == 'string'){
 			settings = {};
 			settings[name] = value;
+			if(inst && name == 'color' && value){
+				this._setColor(inst, value, true);
+			}
 		}
 		if(inst){
 			if(this._curInst == inst){
-				this._hideColorpicker();
+				this._updateColorpicker();
 			}
-			var date = this._getDateColorpicker(target, true);
-			var minDate = this._getMinMaxDate(inst, 'min');
-			var maxDate = this._getMinMaxDate(inst, 'max');
 			extendRemove(inst.settings, settings);
-			$.colorpicker._updateColorpicker();
 		}
 	},
 
@@ -291,7 +290,7 @@ $.extend(Colorpicker.prototype, {
 		}
 		var inst = $.colorpicker._getInst(input);
 		if(this._curInst && this._curInst != inst){
-			this._triggerOnClose(this._curInst);
+			this._triggerOnClose();
 			this.cpDiv.stop(true, true);
 		}
 		this._curInst = inst;
@@ -338,7 +337,7 @@ $.extend(Colorpicker.prototype, {
 		}
 		var postProcess = function(){
 			$.colorpicker._curInst = null;
-			$.colorpicker._triggerOnClose(inst);
+			$.colorpicker._triggerOnClose();
 		};
 		if(this._colorpickerShowing){
 			var showAnim = this._get(inst, 'showAnim');
@@ -354,7 +353,11 @@ $.extend(Colorpicker.prototype, {
 		}
 	},
 
-	_triggerOnClose: function(inst){
+	_triggerOnClose: function(){
+		if(!this._curInst){
+			return;
+		}
+		var inst = this._curInst;
 		inst.input.removeClass('selected');
 		this._setColor(inst, inst.color.hex);
 		cpDiv.d1Div.control.add(cpDiv.d2Div.control).removeClass(this.controlsClassPrefix+'invert');
@@ -643,8 +646,8 @@ $.extend(Colorpicker.prototype, {
 		return(parseInt(hex,16));
 	},
 
-	rgbToLum: function(r, g,b){
-		return Math.round((0.2126*r + 0.7152*g + 0.0722*b)/2.55);
+	rgbToLum: function(rgb){
+		return Math.round((0.2126*rgb.r + 0.7152*rgb.g + 0.0722*rgb.b)/2.55);
 	},
 
 	rgbToHsv: function(rgb){
@@ -784,7 +787,7 @@ $.fn.colorpicker = function(options){
 						var $this = $(this);
 						$this.closest('li').addClass('selected')
 							.siblings('.selected').removeClass('selected');
-						$.colorpicker.setMode($this.data('mode'));
+						$.colorpicker._setMode($this.data('mode'));
 					}).closest('li').click(function(){
 						$(this).find('input').focus();
 					});
@@ -906,7 +909,7 @@ $.fn.colorpicker = function(options){
 			}
 		})
 
-		$.colorpicker.setMode($.colorpicker.mode);
+		$.colorpicker._setMode($.colorpicker.mode);
 
 		$.colorpicker.initialized = true;
 	}
@@ -922,6 +925,16 @@ $.fn.colorpicker = function(options){
 				apply($.colorpicker, [this].concat(otherArgs)) :
 			$.colorpicker._attachColorpicker(this, options);
 	});
+};
+
+function extendRemove(target, props) {
+	$.extend(target, props);
+	for(var name in props){
+		if(props[name] == null || props[name] == undefined){
+			target[name] = props[name];
+		}
+	}
+	return target;
 };
 
 $.colorpicker = new Colorpicker();
