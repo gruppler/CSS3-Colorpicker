@@ -175,31 +175,28 @@ input.color {
 	right: 5px;
 	font-size: 10px;
 }
-#css3colorpicker-div-1d {
-	cursor: n-resize;
-	width: 20px;
+#css3colorpicker-div-1d,
+#css3colorpicker-div-2d {
 	height: 256px;
 	position: absolute;
-	top: 0;
-	left: 265px;
 	overflow: visible;
+	background: #fff;
 	-webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0 1px 5px rgba(0,0,0,0.75);
 	-o-box-shadow: 0 1px 5px rgba(0,0,0,0.75);
 	box-shadow: 0 1px 5px rgba(0,0,0,0.75);
 }
+#css3colorpicker-div-1d {
+	cursor: n-resize;
+	width: 20px;
+	top: 0;
+	left: 265px;
+}
 #css3colorpicker-div-2d {
 	cursor: crosshair;
 	width: 256px;
-	height: 256px;
-	position: absolute;
 	top: 0;
 	left: 0;
-	overflow: visible;
-	-webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.75);
-	-moz-box-shadow: 0 1px 5px rgba(0,0,0,0.75);
-	-o-box-shadow: 0 1px 5px rgba(0,0,0,0.75);
-	box-shadow: 0 1px 5px rgba(0,0,0,0.75);
 }
 
 #css3colorpicker-div-1dControl,
@@ -327,6 +324,9 @@ input.color {
 }
 
 #css3colorpicker-div.mode-h #css3colorpicker-div-1dGradient {
+	background: #000;
+}
+#css3colorpicker-div.mode-h #css3colorpicker-div-1dColor {
 	background: -moz-linear-gradient(top, #ff0000 0%, #ff00ff 16.67%, #0000ff 33.33%, #00ffff 50%, #00ff00 66.67%, #ffff00 83.33%, #ff0000 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff0000), color-stop(16.67%,#ff00ff), color-stop(33.33%,#0000ff), color-stop(50%,#00ffff), color-stop(66.67%,#00ff00), color-stop(83.33%,#ffff00), color-stop(100%,#ff0000));
 	background: -webkit-linear-gradient(top, #ff0000 0%,#ff00ff 16.67%,#0000ff 33.33%,#00ffff 50%,#00ff00 66.67%,#ffff00 83.33%,#ff0000 100%);

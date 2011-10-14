@@ -422,10 +422,10 @@ $.extend(Colorpicker.prototype, {
 					s: 100,
 					v: 100
 				}).hex);
-				this.cpDiv.d1Div.gradientDiv.css('opacity', 1);
+				this.cpDiv.d1Div.gradientDiv.css('opacity', 1 - inst.color.v/100);
+				this.cpDiv.d1Div.colorDiv.css('opacity', inst.color.s/100);
 				this.cpDiv.d2Div.colorDiv.css('opacity', 1);
 				this.cpDiv.d2Div.gradientDiv.css('opacity', 1);
-				$.colorpicker._setControlStyle();
 			break;
 
 			case 's':
@@ -437,9 +437,9 @@ $.extend(Colorpicker.prototype, {
 					v: inst.color.v
 				}).hex);
 				this.cpDiv.d1Div.gradientDiv.css('opacity', 1 - inst.color.v/100);
+				this.cpDiv.d1Div.colorDiv.css('opacity', 1);
 				this.cpDiv.d2Div.colorDiv.css('opacity', inst.color.s/100);
 				this.cpDiv.d2Div.gradientDiv.css('opacity', 1);
-				$.colorpicker._setControlStyle();
 			break;
 
 			case 'v':
@@ -450,11 +450,12 @@ $.extend(Colorpicker.prototype, {
 					v: 100
 				}).hex);
 				this.cpDiv.d1Div.gradientDiv.css('opacity', 1);
+				this.cpDiv.d1Div.colorDiv.css('opacity', 1);
 				this.cpDiv.d2Div.colorDiv.css('opacity', 1);
 				this.cpDiv.d2Div.gradientDiv.css('opacity', 1 - inst.color.v/100);
-				$.colorpicker._setControlStyle();
 			break;
 		}
+		$.colorpicker._setControlStyle();
 	},
 
 	_updateControls: function(){
@@ -566,31 +567,13 @@ $.extend(Colorpicker.prototype, {
 		if(!this._curInst || !$.colorpicker._get(this._curInst, 'invertControls')){
 			return false;
 		}
-		switch(this.mode){
-			case 'h':
-				var l = (new $.colorpicker.color({h:this._curInst.color.h, s:100, v:100})).l;
-				if(l < $.colorpicker.minLum){
-					cpDiv.d1Div.control.addClass(this.controlsClassPrefix+'invert');
-				}else{
-					cpDiv.d1Div.control.removeClass(this.controlsClassPrefix+'invert');
-				}
-				if(this._curInst.color.l < $.colorpicker.minLum){
-					cpDiv.d2Div.control.addClass(this.controlsClassPrefix+'invert');
-				}else{
-					cpDiv.d2Div.control.removeClass(this.controlsClassPrefix+'invert');
-				}
-			break;
 
-			case 's':
-			case 'v':
-				if(this._curInst.color.l < $.colorpicker.minLum){
-					cpDiv.d1Div.control.addClass(this.controlsClassPrefix+'invert');
-					cpDiv.d2Div.control.addClass(this.controlsClassPrefix+'invert');
-				}else{
-					cpDiv.d1Div.control.removeClass(this.controlsClassPrefix+'invert');
-					cpDiv.d2Div.control.removeClass(this.controlsClassPrefix+'invert');
-				}
-			break;
+		if(this._curInst.color.l < $.colorpicker.minLum){
+			cpDiv.d1Div.control.addClass(this.controlsClassPrefix+'invert');
+			cpDiv.d2Div.control.addClass(this.controlsClassPrefix+'invert');
+		}else{
+			cpDiv.d1Div.control.removeClass(this.controlsClassPrefix+'invert');
+			cpDiv.d2Div.control.removeClass(this.controlsClassPrefix+'invert');
 		}
 	},
 
