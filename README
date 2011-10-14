@@ -54,7 +54,8 @@ Options:
     realtime:       true,       // Update instantly
     invertControls: true,       // Invert color of mouse controls
                                 //   based on luminance
-    controlStyle:   'simple',   // Mouse control theme [simple|raised|inset]
+    controlStyle:   'simple',   // Mouse control theme [simple|raised|inset];
+                                //   separate multiple themes with a space
     swatches:       true        // [true|false] to enable/disable,
                                 //   or an array of hex codes to pre-fill
 

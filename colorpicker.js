@@ -320,7 +320,10 @@ $.extend(Colorpicker.prototype, {
 			$.colorpicker.cpDiv.addClass('visible');
 		};
 
-		cpDiv.addClass(this.controlsClassPrefix+$.colorpicker._get(inst, 'controlStyle'));
+		var styles = $.colorpicker._get(inst, 'controlStyle').split(/\s+/);
+		for(var i = 0; i < styles.length; i++){
+			cpDiv.addClass(this.controlsClassPrefix + styles[i]);
+		}
 		this.cpDiv.oldColorDiv.data('hex', inst.color.hex).css('backgroundColor', '#'+inst.color.hex);
 
 		var beforeShow = this._get(inst, 'beforeShow');
@@ -359,8 +362,8 @@ $.extend(Colorpicker.prototype, {
 			return;
 		}
 		var postProcess = function(){
-			$.colorpicker._curInst = null;
 			$.colorpicker._triggerOnClose();
+			$.colorpicker._curInst = null;
 		};
 		if(this._colorpickerShowing){
 			var showAnim = this._get(inst, 'showAnim');
@@ -389,7 +392,11 @@ $.extend(Colorpicker.prototype, {
 		inst.input.removeClass('selected');
 		this._setColor(inst, inst.color.hex);
 		cpDiv.d1Div.control.add(cpDiv.d2Div.control).removeClass(this.controlsClassPrefix+'invert');
-		cpDiv.removeClass(this.controlsClassPrefix+$.colorpicker._get(inst, 'controlStyle'));
+
+		var styles = $.colorpicker._get(inst, 'controlStyle').split(/\s+/);
+		for(var i = 0; i < styles.length; i++){
+			cpDiv.removeClass(this.controlsClassPrefix + styles[i]);
+		}
 	},
 
 	_updateColorpicker: function(force){
@@ -486,7 +493,7 @@ $.extend(Colorpicker.prototype, {
 				this.cpDiv.d2Div.gradientDiv.css('opacity', 1 - inst.color.v/100);
 			break;
 		}
-		$.colorpicker._setControlStyle();
+		$.colorpicker._setControlInvert();
 	},
 
 	_updateControls: function(){
@@ -594,7 +601,7 @@ $.extend(Colorpicker.prototype, {
 		return false;
 	},
 
-	_setControlStyle: function(){
+	_setControlInvert: function(){
 		if(!this._curInst || !$.colorpicker._get(this._curInst, 'invertControls')){
 			return false;
 		}
