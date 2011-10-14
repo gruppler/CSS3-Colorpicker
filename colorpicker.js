@@ -856,7 +856,7 @@ $.fn.colorpicker = function(options){
 			$.colorpicker._updateColorpicker();
 		});
 		cpDiv.colorDiv.click(function(){
-			if($.colorpicker._get($.colorpicker._curInst, 'realtime')){
+			if($.colorpicker._get($.colorpicker._curInst, 'realtime') || $.colorpicker._curInst.settings.color == $.colorpicker._curInst.color.hex){
 				$.colorpicker._hideColorpicker();
 			}else{
 				$.colorpicker._setColor($.colorpicker._curInst, $.colorpicker._curInst.color.hex);
