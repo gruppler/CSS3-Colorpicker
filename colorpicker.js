@@ -76,12 +76,19 @@ function Colorpicker(){
 	this._colorDivClass = colorDivClass;
 
 	this._defaults = {
+		// Options
 		showAnim: true,			// Fade in/out
 		duration: 150,			// Fade duration
 		color: 'FFFFFF',		// Default color
 		realtime: true,			// Update instantly
 		invertControls: true,	// Invert color of mouse controls based on luminance
-		controlStyle: 'simple'	// Mouse control theme [simple|raised|inset]
+		controlStyle: 'simple',	// Mouse control theme [simple|raised|inset]
+
+		// Events
+		beforeShow: null,		// Fired before the color picker is shown
+		onClose: null,			// Fired when the color picker is hidden
+		onSelect: null,			// Fired when the color is set
+		onAddSwatch: null		// Fired when a new color swatch is added
 	};
 };
 
@@ -105,6 +112,11 @@ $.extend(Colorpicker.prototype, {
 			$.colorpicker._updateMaps();
 			$.colorpicker._updateControls();
 		}
+	},
+
+	refresh: function(){
+		this._updateColorpicker(true);
+		return this;
 	},
 
 	color: function(args){
@@ -232,6 +244,11 @@ $.extend(Colorpicker.prototype, {
 		inst.settings.color = hex;
 		if(!this._isDragging) inst.color.setHex(hex);
 		this._updateTarget(inst, force);
+
+		var onSelect = this._get(inst, 'onSelect');
+		if(typeof(onSelect) == 'function'){
+			onSelect(hex, inst);
+		}
 	},
 
 	_newInst: function(target){
@@ -305,6 +322,12 @@ $.extend(Colorpicker.prototype, {
 
 		cpDiv.addClass(this.controlsClassPrefix+$.colorpicker._get(inst, 'controlStyle'));
 		this.cpDiv.oldColorDiv.data('hex', inst.color.hex).css('backgroundColor', '#'+inst.color.hex);
+
+		var beforeShow = this._get(inst, 'beforeShow');
+		if(typeof(beforeShow) == 'function'){
+			beforeShow(inst.input, inst);
+		}
+
 		this._colorpickerShowing = true;
 		this.cpDiv[showAnim ? 'fadeIn' : 'show']((showAnim ? duration : null), postProcess);
 		if(!showAnim){
@@ -348,6 +371,11 @@ $.extend(Colorpicker.prototype, {
 			}
 			this.cpDiv.removeClass('visible');
 			this._colorpickerShowing = false;
+
+			var onClose = this._get(inst, 'onClose');
+			if(typeof(onClose) == 'function'){
+				onClose(hex, inst);
+			}
 		}else{
 			postProcess();
 		}

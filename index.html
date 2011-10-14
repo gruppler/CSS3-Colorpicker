@@ -60,6 +60,21 @@ li {
 li:nth-child(even) {
 	background: #ccc;
 }
+output {
+	font-weight: normal;
+	display: block;
+	height: 1.25em;
+	padding: 0.25em;
+	background: #fff;
+	-webkit-box-shadow: inset 0px 1px 5px rgba(0,0,0,0.75);
+	-moz-box-shadow: inset 0px 1px 5px rgba(0,0,0,0.75);
+	-o-box-shadow: inset 0px 1px 5px rgba(0,0,0,0.75);
+	box-shadow: inset 0px 1px 5px rgba(0,0,0,0.75);
+	-webkit-text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-moz-text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-o-text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
 </style>
 </head>
 <body>
@@ -69,6 +84,7 @@ li:nth-child(even) {
 	<li>Color 2: <div id="color2"></div></li>
 	<li>Color 3: <input id="color3" value="#80A000"/></li>
 	<li>Color 4: <input type="text" id="color4"/></li>
+	<li><output/></li>
 </ul>
 
 <script type="text/javascript">
@@ -91,10 +107,9 @@ $(function(){
 		color: '#15a'
 	});
 
-	$('.color').change(function(){
-		var color = $(this).data('color');
-		console.log(this.id, color);
-	})
+	$.colorpicker.setDefaults({onSelect: function(color, input){
+		$("output").val(input.id+": "+color);
+	}})
 });
 </script>
 
