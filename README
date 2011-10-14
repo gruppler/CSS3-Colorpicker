@@ -1,5 +1,5 @@
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.01
+v1.0.1
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -26,16 +26,19 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
--------------------------------------------------------------------------------
+================================================================================
 
 Usage:
 
 Include these in your header:
+
     <link rel="stylesheet" type="text/css" href="colorpicker.css"/>
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="colorpicker.js"></script>
 
+
 Apply to your selection:
+
     // Default options
     $(".selector").colorpicker();
 
@@ -46,8 +49,10 @@ Apply to your selection:
         controlStyle: 'raised'
     });
 
+--------------------------------------------------------------------------------
 
 Options:
+
     showAnim:       true,       // Fade in/out
     duration:       150,        // Fade duration
     color:          'FFF',      // Default color
@@ -56,24 +61,27 @@ Options:
                                 //   based on luminance
     controlStyle:   'simple',   // Mouse control theme [simple|raised|inset];
                                 //   separate multiple themes with a space
-    swatches:       true        // [true|false] to enable/disable,
-                                //   or an array of hex codes to pre-fill
+
 
 Options can be retrieved or changed at any time:
+
     // Get option's current value
     $(".selector").colorpicker("option", "color");
 
     // Set option
     $(".selector").colorpicker("option", "color", "fff");
 
+--------------------------------------------------------------------------------
 
 Events:
+
     beforeShow(input, inst)     // Fired before the color picker is shown
     onClose(hex, inst)          // Fired when the color picker is hidden
     onSelect(hex, inst)         // Fired when the color is set
-    onAddSwatch(hex, swatches)  // Fired when a new color swatch is added
+
 
 Event handlers can be set just like options:
+
     // At initialization
     $(".selector").colorpicker({
         change: function(hex, inst){...}
@@ -82,8 +90,10 @@ Event handlers can be set just like options:
     // After initialization
     $(".selector").colorpicker('option', 'change', function(hex, inst){...});
 
+--------------------------------------------------------------------------------
 
 Public Methods:
+
     setDefaults(settings)   // Set the defaults for all colorpickers
     refresh()               // Update the datepicker
     color(args)             // A useful color class
@@ -99,7 +109,9 @@ Public Methods:
     hsvToRgb(rgb)           // hsv = {h:[0-359], s:[0-100], v:[0-100]}
                             //   Returns {r:[0-255], g:[0-255], b:[0-255]}
 
+
 To use a public method, call it like this:
+
     // Validate 'hex'
     $.colorpicker.validateHex('hex');
 

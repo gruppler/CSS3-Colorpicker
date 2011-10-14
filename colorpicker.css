@@ -274,6 +274,10 @@ input.color {
 #css3colorpicker-div.controls-inset #css3colorpicker-div-2d {
 	overflow: hidden;
 }
+#css3colorpicker-div.controls-simple #css3colorpicker-div-1d,
+#css3colorpicker-div.controls-simple #css3colorpicker-div-2d {
+	overflow: visible;
+}
 #css3colorpicker-div.controls-raised #css3colorpicker-div-1dControl,
 #css3colorpicker-div.controls-inset #css3colorpicker-div-1dControl.controls-invert {
 	-webkit-box-shadow: 0 -1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.65);
