@@ -1,7 +1,8 @@
 /*!
-CSS3 ColorPicker
+CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
+v1.1
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
-Based on Colorpicker
+Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
 MIT style license
 
@@ -82,7 +83,10 @@ function Colorpicker(){
 		color: 'FFFFFF',		// Default color
 		realtime: true,			// Update instantly
 		invertControls: true,	// Invert color of mouse controls based on luminance
-		controlStyle: 'simple',	// Mouse control theme [simple|raised|inset]
+		controlStyle: 'simple',	// Mouse control theme [simple|raised|inset];
+								//   separate multiple themes with a space
+		swatches: true,			// [true|false] to enable/disable,
+								//   or an array of hex codes to pre-fill
 
 		// Events
 		beforeShow: null,		// Fired before the color picker is shown
@@ -615,15 +619,18 @@ $.extend(Colorpicker.prototype, {
 		}
 	},
 
-	_submit: function(){
+	_submit: function(hex){
 		if(!this._curInst){
 			return false;
 		}
+		var inst = $.colorpicker._curInst;
+		var hex = hex || inst.color.hex;
 
-		if($.colorpicker._get($.colorpicker._curInst, 'realtime') || $.colorpicker._curInst.settings.color == $.colorpicker._curInst.color.hex){
+		if(inst.settings.color == hex && inst.color.hex == hex){
 			$.colorpicker._hideColorpicker();
 		}else{
-			$.colorpicker._setColor($.colorpicker._curInst, $.colorpicker._curInst.color.hex);
+			$.colorpicker._setColor(inst, hex);
+			$.colorpicker._updateColorpicker();
 		}
 	},
 
@@ -912,8 +919,7 @@ $.fn.colorpicker = function(options){
 			}
 		}
 		cpDiv.oldColorDiv.click(function(){
-			$.colorpicker._setColor($.colorpicker._curInst, $(this).data('hex'));
-			$.colorpicker._updateColorpicker();
+			$.colorpicker._submit($(this).data('hex'));
 		});
 		cpDiv.colorDiv.click(function(){
 			$.colorpicker._submit();

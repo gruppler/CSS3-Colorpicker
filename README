@@ -1,5 +1,5 @@
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.0.1
+v1.1
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -61,6 +61,8 @@ Options:
                                 //   based on luminance
     controlStyle:   'simple',   // Mouse control theme [simple|raised|inset];
                                 //   separate multiple themes with a space
+    swatches:       true        // [true|false] to enable/disable,
+                                //   or an array of hex codes to pre-fill
 
 
 Options can be retrieved or changed at any time:
@@ -78,6 +80,7 @@ Events:
     beforeShow(input, inst)     // Fired before the color picker is shown
     onClose(hex, inst)          // Fired when the color picker is hidden
     onSelect(hex, inst)         // Fired when the color is set
+    onAddSwatch(hex, swatches)  // Fired when a new color swatch is added
 
 
 Event handlers can be set just like options:
