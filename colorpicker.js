@@ -577,6 +577,18 @@ $.extend(Colorpicker.prototype, {
 		}
 	},
 
+	_submit: function(){
+		if(!this._curInst){
+			return false;
+		}
+
+		if($.colorpicker._get($.colorpicker._curInst, 'realtime') || $.colorpicker._curInst.settings.color == $.colorpicker._curInst.color.hex){
+			$.colorpicker._hideColorpicker();
+		}else{
+			$.colorpicker._setColor($.colorpicker._curInst, $.colorpicker._curInst.color.hex);
+		}
+	},
+
 	_get: function(inst, key){
 		return inst.settings[key] !== undefined ? inst.settings[key] : this._defaults[key];
 	},
@@ -799,7 +811,7 @@ $.fn.colorpicker = function(options){
 								break;
 
 								case 13:
-									$.colorpicker._setColor(inst, inst.color.hex);
+									$.colorpicker._submit();
 								break;
 
 								default:
@@ -828,7 +840,7 @@ $.fn.colorpicker = function(options){
 								break;
 
 								case 13:
-									$.colorpicker._setColor(inst, inst.color.hex);
+									$.colorpicker._submit();
 								break;
 
 								default:
@@ -842,7 +854,17 @@ $.fn.colorpicker = function(options){
 					break;
 
 					case 'hex':
-						$input.keyup(function(){
+						$input.keydown(function(e){
+							if(!$.colorpicker._curInst) return;
+							switch(e.keyCode){
+								case 13:
+									$.colorpicker._submit();
+								break;
+
+								default:
+									return;
+							}
+						}).keyup(function(){
 							if(!$.colorpicker._curInst) return;
 							$.colorpicker._curInst.color.setHex(cpDiv.inputs.hex.val());
 							$.colorpicker._updateColorpicker();
@@ -856,11 +878,7 @@ $.fn.colorpicker = function(options){
 			$.colorpicker._updateColorpicker();
 		});
 		cpDiv.colorDiv.click(function(){
-			if($.colorpicker._get($.colorpicker._curInst, 'realtime') || $.colorpicker._curInst.settings.color == $.colorpicker._curInst.color.hex){
-				$.colorpicker._hideColorpicker();
-			}else{
-				$.colorpicker._setColor($.colorpicker._curInst, $.colorpicker._curInst.color.hex);
-			}
+			$.colorpicker._submit();
 		});
 
 		cpDiv.d1Div.mousedown(function(e){
