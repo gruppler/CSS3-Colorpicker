@@ -735,10 +735,10 @@ $.extend(Colorpicker.prototype, {
 	clearSwatches: function(){
 		this.swatches = [];
 		this.cpDiv.swatches.empty();
-		var onAddSwatch = this._defaults.onAddSwatch;
-		if(typeof(onAddSwatch) == 'function'){
-			onAddSwatch('', this.swatches);
-		}
+		// var onAddSwatch = this._defaults.onAddSwatch;
+		// if(typeof(onAddSwatch) == 'function'){
+		// 	onAddSwatch('', this.swatches);
+		// }
 	},
 
 	_useSwatch: function(e){
