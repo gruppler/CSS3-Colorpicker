@@ -56,17 +56,72 @@ input.color {
 	-webkit-transition: top .2s ease-in-out, left .2s ease-in-out;
 	-o-transition: top .2s ease-in-out, left .2s ease-in-out;
 }
-/*#css3colorpicker-div.visible #css3colorpicker-div-color,
-#css3colorpicker-div.visible #css3colorpicker-div-colorOld {
-	transition: background-color .2s ease-in-out;
-	-moz-transition: background-color .2s ease-in-out;
-	-webkit-transition: background-color .2s ease-in-out;
-	-o-transition: background-color .2s ease-in-out;
-}*/
-#css3colorpicker-div > div {
+#css3colorpicker-div-container {
 	width: 378px;
 	height: 256px;
 	position: relative;
+}
+#css3colorpicker-div-swatchContainer {
+	width: 378px;
+	height: 0;
+	overflow: hidden;
+}
+#css3colorpicker-div.visible #css3colorpicker-div-swatchContainer {
+	transition: height .2s ease-in-out;
+	-moz-transition: height .2s ease-in-out;
+	-webkit-transition: height .2s ease-in-out;
+	-o-transition: height .2s ease-in-out;
+}
+#css3colorpicker-div-swatches {
+	width: 378px;
+	height: 28px;
+	position: relative;
+	overflow: hidden;
+	margin-top: 10px;
+	background: #bbb;
+	background: -moz-linear-gradient(top, #ddd 0%, #f0f0f0 50%, #ddd 100%);
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ddd), color-stop(50%,#f0f0f0), color-stop(100%,#ddd));
+	background: -webkit-linear-gradient(left, #ddd 0%,#f0f0f0 50%,#ddd 100%);
+	background: -o-linear-gradient(left, #ddd 0%,#f0f0f0 50%,#ddd 100%);
+	background: linear-gradient(left, #ddd 0%,#f0f0f0 50%,#ddd 100%);
+	-webkit-box-shadow: inset 0 1px 5px rgba(0,0,0,0.35);
+	-moz-box-shadow: inset 0 1px 5px rgba(0,0,0,0.35);
+	-o-box-shadow: inset 0 1px 5px rgba(0,0,0,0.35);
+	box-shadow: inset 0 1px 5px rgba(0,0,0,0.35);
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
+	border-radius: 2px;
+}
+#css3colorpicker-div-swatches .swatch {
+	dispaly: inline-block;
+	vertical-align: middle;
+	float: left;
+	width: 20px;
+	height: 20px;
+	margin: 4px 5px;
+	margin-right: 0;
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.7), inset 0 1px 5px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0 1px 0 rgba(255,255,255,0.7), inset 0 1px 5px rgba(0,0,0,0.75);
+	-o-box-shadow: 0 1px 0 rgba(255,255,255,0.7), inset 0 1px 5px rgba(0,0,0,0.75);
+	box-shadow: 0 1px 0 rgba(255,255,255,0.7), inset 0 1px 5px rgba(0,0,0,0.75);
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.5), inset 0 1px 3px rgba(0,0,0,0.35);
+	-moz-box-shadow: 0 1px 0 rgba(255,255,255,0.5), inset 0 1px 3px rgba(0,0,0,0.35);
+	-o-box-shadow: 0 1px 0 rgba(255,255,255,0.5), inset 0 1px 3px rgba(0,0,0,0.35);
+	box-shadow: 0 1px 0 rgba(255,255,255,0.5), inset 0 1px 3px rgba(0,0,0,0.35);
+}
+#css3colorpicker-div-swatches .swatch:first-child {
+	margin-left: 4px;
+}
+#css3colorpicker-div.visible #css3colorpicker-div-swatches .swatch {
+	transition: width .2s ease-in-out;
+	-moz-transition: width .2s ease-in-out;
+	-webkit-transition: width .2s ease-in-out;
+	-o-transition: width .2s ease-in-out;
 }
 #css3colorpicker-div-color {
 	width: 50px;
@@ -112,15 +167,15 @@ input.color {
 	margin: 0;
 	overflow: hidden;
 	background: #bbb;
-	background: -moz-linear-gradient(top, #ccc 0%, #eee 50%, #ccc 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ccc), color-stop(50%,#eee), color-stop(100%,#ccc));
-	background: -webkit-linear-gradient(top, #ccc 0%,#eee 50%,#ccc 100%);
-	background: -o-linear-gradient(top, #ccc 0%,#eee 50%,#ccc 100%);
-	background: linear-gradient(top, #ccc 0%,#eee 50%,#ccc 100%);
-	-webkit-box-shadow: inset 0 1px 10px rgba(0,0,0,0.35);
-	-moz-box-shadow: inset 0 1px 10px rgba(0,0,0,0.35);
-	-o-box-shadow: inset 0 1px 10px rgba(0,0,0,0.35);
-	box-shadow: inset 0 1px 10px rgba(0,0,0,0.35);
+	background: -moz-linear-gradient(top, #ddd 0%, #f0f0f0 50%, #ddd 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ddd), color-stop(50%,#f0f0f0), color-stop(100%,#ddd));
+	background: -webkit-linear-gradient(top, #ddd 0%,#f0f0f0 50%,#ddd 100%);
+	background: -o-linear-gradient(top, #ddd 0%,#f0f0f0 50%,#ddd 100%);
+	background: linear-gradient(top, #ddd 0%,#f0f0f0 50%,#ddd 100%);
+	-webkit-box-shadow: inset 0 1px 5px rgba(0,0,0,0.35);
+	-moz-box-shadow: inset 0 1px 5px rgba(0,0,0,0.35);
+	-o-box-shadow: inset 0 1px 5px rgba(0,0,0,0.35);
+	box-shadow: inset 0 1px 5px rgba(0,0,0,0.35);
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	-o-border-radius: 2px;
@@ -147,10 +202,10 @@ input.color {
 #css3colorpicker-div-inputContainer li.selected {
 	font-weight: bold;
 	background: rgba(255,255,255,0.5);
-	-webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.35);
-	-moz-box-shadow: 0 1px 10px rgba(0,0,0,0.35);
-	-o-box-shadow: 0 1px 10px rgba(0,0,0,0.35);
-	box-shadow: 0 1px 10px rgba(0,0,0,0.35);
+	-webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.35);
+	-moz-box-shadow: 0 1px 5px rgba(0,0,0,0.35);
+	-o-box-shadow: 0 1px 5px rgba(0,0,0,0.35);
+	box-shadow: 0 1px 5px rgba(0,0,0,0.35);
 }
 #css3colorpicker-div-inputContainer input {
 	width: 45px;

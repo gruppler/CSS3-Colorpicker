@@ -34,6 +34,8 @@ var PROP_NAME = 'css3colorpicker';
 var mainDivId = 'css3colorpicker-div';
 var colorDivClass = 'color';
 var cpDiv = $('<div id="' + mainDivId + '"></div>');
+cpDiv.swatchContainer = $('<div id="' + mainDivId + '-swatchContainer"></div>');
+cpDiv.swatches = $('<div id="' + mainDivId + '-swatches"></div>');
 cpDiv.colorDiv = $('<div id="' + mainDivId + '-color"></div>');
 cpDiv.oldColorDiv = $('<div id="' + mainDivId + '-colorOld"></div>');
 cpDiv.d1Div = $('<div id="' + mainDivId + '-1d"></div>');
@@ -55,7 +57,7 @@ cpDiv.inputs = {
 	hex: $('<input type="text" id="' + mainDivId + '-hex"/>')
 }
 cpDiv.append(
-	$('<div></div>').append(
+	$('<div id="' + mainDivId + '-container"></div>').append(
 		cpDiv.colorDiv,
 		cpDiv.oldColorDiv,
 		cpDiv.d1Div.append(cpDiv.d1Div.colorDiv, cpDiv.d1Div.gradientDiv, cpDiv.d1Div.control),
@@ -69,7 +71,8 @@ cpDiv.append(
 			$('<li>B: </div>').append(cpDiv.inputs.b),
 			$('<li>#: </div>').append(cpDiv.inputs.hex)
 		)
-	)
+	),
+	cpDiv.swatchContainer.append(cpDiv.swatches)
 );
 
 function Colorpicker(){
@@ -79,7 +82,7 @@ function Colorpicker(){
 	this._defaults = {
 		// Options
 		showAnim: true,			// Fade in/out
-		duration: 150,			// Fade duration
+		duration: 200,			// Fade duration
 		color: 'FFFFFF',		// Default color
 		realtime: true,			// Update instantly
 		invertControls: true,	// Invert color of mouse controls based on luminance
@@ -102,6 +105,8 @@ $.extend(Colorpicker.prototype, {
 	markerClassName: 'hasColorpicker',
 	controlsClassPrefix: 'controls-',
 	minLum: 50,
+	swatches: [],
+	swatchLimit: 15,
 
 	setDefaults: function(settings){
 		extendRemove(this._defaults, settings || {});
@@ -220,6 +225,12 @@ $.extend(Colorpicker.prototype, {
 		inst.settings = $.extend({}, settings || {}, inlineSettings || {});
 		this._setColor(inst, input.val() || input.data('color') || this._get(inst, 'color'), true);
 
+		var swatches = this._get(inst, 'swatches');
+		if(swatches){
+			this.addSwatch(swatches);
+			this.addSwatch(inst.settings.color, true);
+		}
+
 		if(input.is("input")){
 			input.focus(function(){
 				$.colorpicker._showColorpicker(target);
@@ -245,11 +256,16 @@ $.extend(Colorpicker.prototype, {
 
 	_setColor: function(inst, hex, force){
 		hex = $.colorpicker.validateHex(hex);
+		var onSelect = !this._isCurrentColor(hex) ?
+			this._get(inst, 'onSelect') :
+			null;
+
 		inst.settings.color = hex;
-		if(!this._isDragging) inst.color.setHex(hex);
+		if(!this._isDragging){
+			inst.color.setHex(hex);
+		}
 		this._updateTarget(inst, force);
 
-		var onSelect = this._get(inst, 'onSelect');
 		if(typeof(onSelect) == 'function'){
 			onSelect(hex, inst);
 		}
@@ -293,6 +309,10 @@ $.extend(Colorpicker.prototype, {
 			settings[name] = value;
 			if(inst && name == 'color' && value){
 				this._setColor(inst, value, true);
+				this.addSwatch(value, true);
+			}
+			if(name == 'swatches' && value){
+				this.addSwatch(value);
 			}
 		}
 		if(inst){
@@ -328,7 +348,7 @@ $.extend(Colorpicker.prototype, {
 		for(var i = 0; i < styles.length; i++){
 			cpDiv.addClass(this.controlsClassPrefix + styles[i]);
 		}
-		this.cpDiv.oldColorDiv.data('hex', inst.color.hex).css('backgroundColor', '#'+inst.color.hex);
+		this.cpDiv.oldColorDiv.data('color', inst.color.hex).css('backgroundColor', '#'+inst.color.hex);
 
 		var beforeShow = this._get(inst, 'beforeShow');
 		if(typeof(beforeShow) == 'function'){
@@ -340,14 +360,20 @@ $.extend(Colorpicker.prototype, {
 		if(!showAnim){
 			postProcess();
 		}
-		$.colorpicker._positionColorpicker(input);
+
+		// Indirectly call _positionColorpicker()
+		if(!!this._get(inst, 'swatches')){
+			this._showSwatches();
+		}else{
+			this._hideSwatches();
+		}
 	},
 
-	_positionColorpicker: function(){
+	_positionColorpicker: function(width, height){
 		var $input = $.colorpicker._curInst.input;
 		var offset = $input.offset();
-		var width = this.cpDiv.outerWidth();
-		var height = this.cpDiv.outerHeight();
+		var width = width || this.cpDiv.outerWidth();
+		var height = height || this.cpDiv.outerHeight();
 		var winWidth = $(window).width();
 		var winHeight = $(window).height();
 		offset.left += $input.outerWidth() + 10;
@@ -389,11 +415,12 @@ $.extend(Colorpicker.prototype, {
 	},
 
 	_triggerOnClose: function(){
-		if(!this._curInst){
+		var inst = this._curInst;
+		if(!inst){
 			return;
 		}
-		var inst = this._curInst;
 		inst.input.removeClass('selected');
+		$.colorpicker.addSwatch(inst.color.hex, true);
 		this._setColor(inst, inst.color.hex);
 		cpDiv.d1Div.control.add(cpDiv.d2Div.control).removeClass(this.controlsClassPrefix+'invert');
 
@@ -403,17 +430,29 @@ $.extend(Colorpicker.prototype, {
 		}
 	},
 
+	_showSwatches: function(){
+		var height = this.cpDiv.swatches.outerHeight() + parseInt(this.cpDiv.swatches.css('margin-top'));
+		this._positionColorpicker(false, height + this.cpDiv.defaultHeight);
+		this.cpDiv.swatchContainer.height(height);
+	},
+
+	_hideSwatches: function(){
+		this._positionColorpicker(false, this.cpDiv.defaultHeight);
+		this.cpDiv.swatchContainer.height(0);
+	},
+
 	_updateColorpicker: function(force){
-		if(!this._curInst){
+		var inst = this._curInst;
+		if(!inst){
 			return;
 		}
-		var inst = this._curInst;
-		this.cpDiv.colorDiv.css('backgroundColor', '#'+inst.color.hex);
+		var hex = inst.color.hex;
+		this.cpDiv.colorDiv.data('color', hex).css('backgroundColor', '#'+hex);
 		$.colorpicker._updateInputs(force);
 		$.colorpicker._updateMaps();
 		$.colorpicker._updateControls();
 		if(this._get(inst, 'realtime')){
-			this._setColor(inst, inst.color.hex, force);
+			this._setColor(inst, hex, force);
 		}
 	},
 
@@ -438,10 +477,10 @@ $.extend(Colorpicker.prototype, {
 	},
 
 	_updateInputs: function(force){
-		if(!this._curInst){
+		var inst = this._curInst;
+		if(!inst){
 			return;
 		}
-		var inst = this._curInst;
 		for(var i in this.cpDiv.inputs){
 			if(i && inst.color[i] !== undefined){
 				if(force || !this.cpDiv.inputs[i].is(':focus')){
@@ -452,14 +491,14 @@ $.extend(Colorpicker.prototype, {
 	},
 
 	_updateMaps: function(){
-		if(!this._curInst){
+		var inst = this._curInst;
+		if(!inst){
 			return;
 		}
-		var inst = this._curInst;
 		switch(this.mode){
 			case 'h':
 				this.cpDiv.d1Div.gradientDiv.css('background', '');
-				this.cpDiv.d2Div.colorDiv.css('background-color', '#'+new $.colorpicker.color({
+				this.cpDiv.d2Div.colorDiv.css('background-color', '#'+new this.color({
 					h: inst.color.h,
 					s: 100,
 					v: 100
@@ -471,9 +510,7 @@ $.extend(Colorpicker.prototype, {
 			break;
 
 			case 's':
-				var c = new $.colorpicker.color({h:0, s:0, v:inst.color.v});
-				this.cpDiv.d1Div.gradientDiv.css('background', 'linear-gradient(top, rgba('+c.r+','+c.g+','+c.b+',0) 0%,rgba('+c.r+','+c.g+','+c.b+',1) 100%);');
-				this.cpDiv.d1Div.colorDiv.css('background-color', '#'+new $.colorpicker.color({
+				this.cpDiv.d1Div.colorDiv.css('background-color', '#'+new this.color({
 					h: inst.color.h,
 					s: 100,
 					v: inst.color.v
@@ -486,9 +523,9 @@ $.extend(Colorpicker.prototype, {
 
 			case 'v':
 				this.cpDiv.d1Div.gradientDiv.css('background', '');
-				this.cpDiv.d1Div.colorDiv.css('background-color', '#'+new $.colorpicker.color({
+				this.cpDiv.d1Div.colorDiv.css('background-color', '#'+new this.color({
 					h: inst.color.h,
-					s: 100,
+					s: inst.color.s,
 					v: 100
 				}).hex);
 				this.cpDiv.d1Div.gradientDiv.css('opacity', 1);
@@ -497,7 +534,7 @@ $.extend(Colorpicker.prototype, {
 				this.cpDiv.d2Div.gradientDiv.css('opacity', 1 - inst.color.v/100);
 			break;
 		}
-		$.colorpicker._setControlInvert();
+		$.colorpicker._updateControl();
 	},
 
 	_updateControls: function(){
@@ -605,7 +642,7 @@ $.extend(Colorpicker.prototype, {
 		return false;
 	},
 
-	_setControlInvert: function(){
+	_updateControl: function(){
 		if(!this._curInst || !$.colorpicker._get(this._curInst, 'invertControls')){
 			return false;
 		}
@@ -619,19 +656,95 @@ $.extend(Colorpicker.prototype, {
 		}
 	},
 
-	_submit: function(hex){
-		if(!this._curInst){
+	_submit: function(hex, isSwatch){
+		var inst = this._curInst;
+		if(!inst){
+			return;
+		}
+		var hex = this.validateHex(hex, true) || inst.color.hex;
+
+		if(this._isCurrentColor(hex)){
+			$.colorpicker._hideColorpicker();
+			isSwatch = true;
+		}else{
+			$.colorpicker._setColor(inst, hex, true);
+			$.colorpicker._updateColorpicker(true);
+		}
+
+		$.colorpicker.addSwatch(hex, isSwatch);
+	},
+
+	_isCurrentColor: function(hex){
+		var inst = this._curInst;
+		if(!inst){
+			return;
+		}
+		var hex = this.validateHex(hex, true);
+		return (
+			hex == this.validateHex(inst.settings.color, true) &&
+			hex == this.validateHex(inst.color.hex, true)
+		);
+	},
+
+	addSwatch: function(hex, newOnly){
+		var inst = this._curInst;
+		if(inst && !this._get(inst, 'swatches') || !hex){
 			return false;
 		}
-		var inst = $.colorpicker._curInst;
-		var hex = hex || inst.color.hex;
 
-		if(inst.settings.color == hex && inst.color.hex == hex){
-			$.colorpicker._hideColorpicker();
-		}else{
-			$.colorpicker._setColor(inst, hex);
-			$.colorpicker._updateColorpicker();
+		if(typeof(hex) == 'string'){
+			hex = this.validateHex(hex, true);
+			var index = this.swatches.indexOf(hex);
+			if(index < 0){
+				this.swatches.unshift(hex);
+				var swatch = $('<div/>')
+					.addClass('swatch')
+					.data('color', hex)
+					.mousedown(this._useSwatch)
+					.css({
+						background: '#'+hex,
+						width: 0
+					});
+				window.setTimeout(function(){swatch.css('width', '');},0);
+				this.cpDiv.swatches.prepend(swatch);
+			}else{
+				if(newOnly){
+					return false;
+				}
+				this.swatches.splice(index, 1);
+				this.swatches.unshift(hex);
+				this.cpDiv.swatches.prepend(this.cpDiv.swatches.children().eq(index));
+			}
+			if(this.swatchLimit){
+				this.swatches = this.swatches.slice(0, this.swatchLimit);
+			}
+
+			var onAddSwatch = inst ?
+				this._get(inst, 'onAddSwatch'):
+				this._defaults.onAddSwatch;
+			if(typeof(onAddSwatch) == 'function'){
+				onAddSwatch(hex, this.swatches);
+			}
+		}else if(typeof(hex) == 'object' && hex.length && hex[0]){
+			for(var i = hex.length - 1; i >= 0; i--){
+				this.addSwatch(hex[i]);
+			}
 		}
+	},
+
+	clearSwatches: function(){
+		this.swatches = [];
+		this.cpDiv.swatches.empty();
+		var onAddSwatch = this._defaults.onAddSwatch;
+		if(typeof(onAddSwatch) == 'function'){
+			onAddSwatch('', this.swatches);
+		}
+	},
+
+	_useSwatch: function(e){
+		$.colorpicker._submit($(this).data('color'), true);
+		e.preventDefault();
+		return false;
 	},
 
 	_get: function(inst, key){
@@ -669,8 +782,17 @@ $.extend(Colorpicker.prototype, {
 
 	_hexRegExp: new RegExp(/[a-fA-Z0-9]{6}|[a-fA-Z0-9]{3}/),
 
-	validateHex: function(hex){
-		return ((''+hex).match(this._hexRegExp) || [''])[0];
+	validateHex: function(hex, normalize){
+		if(!hex) return false;
+		hex = ((''+hex).match(this._hexRegExp) || ['000000'])[0];
+		if(normalize){
+			hex = hex.toUpperCase();
+			if(hex.length == 3){
+				hex = hex.split('');
+				hex = [hex[0],hex[0],hex[1],hex[1],hex[2],hex[2]].join('');
+			}
+		}
+		return hex;
 	},
 
 	rgbToHex: function(rgb){
@@ -689,7 +811,7 @@ $.extend(Colorpicker.prototype, {
 	},
 
 	rgbToLum: function(rgb){
-		return Math.round((0.2126*rgb.r + 0.7152*rgb.g + 0.0722*rgb.b)/2.55);
+		return Math.abs(Math.round((0.2126*rgb.r + 0.7152*rgb.g + 0.0722*rgb.b)/2.55));
 	},
 
 	rgbToHsv: function(rgb){
@@ -728,14 +850,14 @@ $.extend(Colorpicker.prototype, {
 				hsv.h = 4 + (r - g) / delta;
 			}
 
-			hsv.h = parseInt(hsv.h * 60);
+			hsv.h = Math.round(hsv.h * 60);
 			if(hsv.h < 0){
 				hsv.h += 360;
 			}
 		}
 
-		hsv.s = parseInt(hsv.s * 100);
-		hsv.v = parseInt(hsv.v * 100);
+		hsv.s = Math.abs(Math.round(hsv.s * 100));
+		hsv.v = Math.abs(Math.round(hsv.v * 100));
 
 		return hsv;
 	},
@@ -752,7 +874,7 @@ $.extend(Colorpicker.prototype, {
 			if(v == 0){
 				rgb.r = rgb.g = rgb.b = 0;
 			}else{
-				rgb.r = rgb.g = rgb.b = parseInt(v * 255 / 100);
+				rgb.r = rgb.g = rgb.b = Math.abs(Math.round(v * 255 / 100));
 			}
 		}else{
 			if(h == 360){
@@ -802,9 +924,9 @@ $.extend(Colorpicker.prototype, {
 					break;
 			}
 
-			rgb.r = parseInt(rgb.r * 255);
-			rgb.g = parseInt(rgb.g * 255);
-			rgb.b = parseInt(rgb.b * 255);
+			rgb.r = Math.abs(Math.round(rgb.r * 255));
+			rgb.g = Math.abs(Math.round(rgb.g * 255));
+			rgb.b = Math.abs(Math.round(rgb.b * 255));
 		}
 
 		return rgb;
@@ -918,12 +1040,14 @@ $.fn.colorpicker = function(options){
 				}
 			}
 		}
-		cpDiv.oldColorDiv.click(function(){
-			$.colorpicker._submit($(this).data('hex'));
+		cpDiv.oldColorDiv.mousedown($.colorpicker._useSwatch);
+		cpDiv.colorDiv.mousedown(function(e){
+			$.colorpicker._submit($(this).data('color'));
+			e.preventDefault();
+			return false;
 		});
-		cpDiv.colorDiv.click(function(){
-			$.colorpicker._submit();
-		});
+
+		cpDiv.defaultHeight = cpDiv.outerHeight();
 
 		cpDiv.d1Div.mousedown(function(e){
 			$.colorpicker._isDragging = true;

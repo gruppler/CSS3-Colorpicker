@@ -54,7 +54,7 @@ Apply to your selection:
 Options:
 
     showAnim:       true,       // Fade in/out
-    duration:       150,        // Fade duration
+    duration:       200,        // Fade duration
     color:          'FFF',      // Default color
     realtime:       true,       // Update instantly
     invertControls: true,       // Invert color of mouse controls
@@ -98,10 +98,13 @@ Event handlers can be set just like options:
 Public Methods:
 
     setDefaults(settings)   // Set the defaults for all colorpickers
+    addSwatch(hex, newOnly) // Add a color or array of colors to the swatches;
+                            //   preserve sorting if 'newOnly' is true
+    clearSwatches()         // Remove all swatches
     refresh()               // Update the datepicker
     color(args)             // A useful color class
     hexToRgb(hex)           // Returns {r:[0-255], g:[0-255], b:[0-255]}
-    validateHex(hex)        // Returns valid, normalized hex code
+    validateHex(hex, norm)  // Returns a valid hex code, optionally normalized
     rgbToHex(rgb)           // rgb = {r:[0-255], g:[0-255], b:[0-255]}
     intToHex(dec)           // Base conversion from 10 to 16
     hextToInt(hex)          // Base conversion from 16 to 10
@@ -119,4 +122,4 @@ To use a public method, call it like this:
     $.colorpicker.validateHex('hex');
 
     // Create a color object
-    var myColor = $.colorpicker.color({hex: 'ccc'});
+    var myColor = new $.colorpicker.color({hex: 'ccc'});

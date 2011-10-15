@@ -73,14 +73,19 @@ output {
 
 <script type="text/javascript">
 $(function(){
+	$.colorpicker.setDefaults({
+		onSelect: function(color, input){
+			$("output").val(input.id+": "+color);
+		},
+		onAddSwatch: function(color, swatches){
+			document.cookie = 'swatches='+swatches.join(',');
+		},
+	}).addSwatch(cookie('swatches').split(','));
+
 	$('#color1').colorpicker({
 		realtime: false,
 		invertControls: false,
-		controlStyle: 'raised',
-		swatches: [
-			'911',
-			'#80A000'
-		]
+		controlStyle: 'raised'
 	});
 	$('#color2').colorpicker({
 		color: 'efa110',
@@ -94,13 +99,19 @@ $(function(){
 	});
 	$('#color4').colorpicker({
 		color: '#15a',
-		controlStyle: 'simple inset'
+		controlStyle: 'simple inset',
 	});
-
-	$.colorpicker.setDefaults({onSelect: function(color, input){
-		$("output").val(input.id+": "+color);
-	}})
 });
+
+function cookie(name){
+    var ca = document.cookie.split(/;\s*/);
+    for(var i = 0; i < ca.length; i++){
+        if(ca[i].indexOf(name + '=') == 0){
+            return ca[i].substring(name.length + 1, ca[i].length);
+        }
+    }
+    return '';
+}
 </script>
 
 </body>
