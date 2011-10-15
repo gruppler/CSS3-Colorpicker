@@ -730,15 +730,17 @@ $.extend(Colorpicker.prototype, {
 				this.addSwatch(hex[i]);
 			}
 		}
+		return this;
 	},
 
 	clearSwatches: function(){
 		this.swatches = [];
 		this.cpDiv.swatches.empty();
-		var onAddSwatch = this._defaults.onAddSwatch;
-		if(typeof(onAddSwatch) == 'function'){
-			onAddSwatch('', this.swatches);
-		}
+		// var onAddSwatch = this._defaults.onAddSwatch;
+		// if(typeof(onAddSwatch) == 'function'){
+		// 	onAddSwatch('', this.swatches);
+		// }
+		return this;
 	},
 
 	_useSwatch: function(e){
