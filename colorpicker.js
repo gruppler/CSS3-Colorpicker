@@ -1,6 +1,6 @@
 /*!
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.1
+v1.1.2
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -422,7 +422,7 @@ $.extend(Colorpicker.prototype, {
 		inst.input.removeClass('selected');
 		$.colorpicker.addSwatch(inst.color.hex, true);
 		this._setColor(inst, inst.color.hex);
-		cpDiv.d1Div.control.add(cpDiv.d2Div.control).removeClass(this.controlsClassPrefix+'invert');
+		cpDiv.removeClass(this.controlsClassPrefix+'invert');
 
 		var styles = $.colorpicker._get(inst, 'controlStyle').split(/\s+/);
 		for(var i = 0; i < styles.length; i++){
@@ -448,6 +448,7 @@ $.extend(Colorpicker.prototype, {
 		}
 		var hex = inst.color.hex;
 		this.cpDiv.colorDiv.data('color', hex).css('backgroundColor', '#'+hex);
+		cpDiv.d2Div.control.css('background-color', '#'+hex);
 		$.colorpicker._updateInputs(force);
 		$.colorpicker._updateMaps();
 		$.colorpicker._updateControls();
@@ -648,11 +649,9 @@ $.extend(Colorpicker.prototype, {
 		}
 
 		if(this._curInst.color.l < $.colorpicker.minLum){
-			cpDiv.d1Div.control.addClass(this.controlsClassPrefix+'invert');
-			cpDiv.d2Div.control.addClass(this.controlsClassPrefix+'invert');
+			cpDiv.addClass(this.controlsClassPrefix+'invert');
 		}else{
-			cpDiv.d1Div.control.removeClass(this.controlsClassPrefix+'invert');
-			cpDiv.d2Div.control.removeClass(this.controlsClassPrefix+'invert');
+			cpDiv.removeClass(this.controlsClassPrefix+'invert');
 		}
 	},
 
