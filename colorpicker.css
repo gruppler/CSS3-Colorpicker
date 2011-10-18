@@ -260,106 +260,21 @@ input.color {
 	top: 0;
 	left: 0;
 	z-index: 2;
-	width: 1px;
-	height: 1px;
 }
 #css3colorpicker-div-1dControl {
 	width: auto;
+	height: 1px;
 	right: 0;
 }
-#css3colorpicker-div-2dControl:after {
-	content: '';
-	display: block;
-	position: absolute;
-	top: -5px;
-	bottom: -5px;
-	left: -5px;
-	right: -5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	-o-border-radius: 5px;
-	border-radius: 5px;
-}
-
-#css3colorpicker-div.controls-simple #css3colorpicker-div-1dControl {
-	margin-top: -1px;
-	border: 1px solid #000;
-	-webkit-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
-	-moz-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
-	-o-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
-	box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
-}
-#css3colorpicker-div.controls-simple #css3colorpicker-div-1dControl.controls-invert {
-	border: 1px solid #fff;
-	-webkit-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
-	-moz-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
-	-o-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
-	box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
-}
-/*#css3colorpicker-div.controls-simple #css3colorpicker-div-2dControl {
-	-webkit-box-shadow: 0 0 1px 1px rgba(0,0,0,0.3);
-	-moz-box-shadow: 0 0 1px 1px rgba(0,0,0,0.3);
-	-o-box-shadow: 0 0 1px 1px rgba(0,0,0,0.3);
-	box-shadow: 0 0 1px 1px rgba(0,0,0,0.3);
-}
-#css3colorpicker-div.controls-simple #css3colorpicker-div-2dControl.controls-invert {
-	-webkit-box-shadow: 0 0 1px 1px rgba(255,255,255,0.3);
-	-moz-box-shadow: 0 0 1px 1px rgba(255,255,255,0.3);
-	-o-box-shadow: 0 0 1px 1px rgba(255,255,255,0.3);
-	box-shadow: 0 0 1px 1px rgba(255,255,255,0.3);
-}*/
-#css3colorpicker-div.controls-simple #css3colorpicker-div-2dControl:after {
-	border: 1px solid #000;
-	-webkit-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
-	-moz-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
-	-o-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
-	box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
-}
-#css3colorpicker-div.controls-simple #css3colorpicker-div-2dControl.controls-invert:after {
-	border: 1px solid #fff;
-	-webkit-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
-	-moz-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
-	-o-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
-	box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
-}
-
-#css3colorpicker-div.controls-raised #css3colorpicker-div-1d,
-#css3colorpicker-div.controls-raised #css3colorpicker-div-2d,
-#css3colorpicker-div.controls-inset #css3colorpicker-div-1d,
-#css3colorpicker-div.controls-inset #css3colorpicker-div-2d {
-	overflow: hidden;
-}
-#css3colorpicker-div.controls-simple #css3colorpicker-div-1d,
-#css3colorpicker-div.controls-simple #css3colorpicker-div-2d {
-	overflow: visible;
-}
-#css3colorpicker-div.controls-raised #css3colorpicker-div-1dControl,
-#css3colorpicker-div.controls-inset #css3colorpicker-div-1dControl.controls-invert {
-	-webkit-box-shadow: 0 -1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.65);
-	-moz-box-shadow: 0 -1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.65);
-	-o-box-shadow: 0 -1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.65);
-	box-shadow: 0 -1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.65);
-}
-#css3colorpicker-div.controls-raised #css3colorpicker-div-1dControl.controls-invert,
-#css3colorpicker-div.controls-inset #css3colorpicker-div-1dControl {
-	-webkit-box-shadow: 0 -1px 1px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
-	-moz-box-shadow: 0 -1px 1px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
-	-o-box-shadow: 0 -1px 1px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
-	box-shadow: 0 -1px 1px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
-}
-#css3colorpicker-div.controls-raised #css3colorpicker-div-2dControl:after,
-#css3colorpicker-div.controls-inset #css3colorpicker-div-2dControl.controls-invert:after {
-	-webkit-box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.65);
-	-moz-box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.65);
-	-o-box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.65);
-	box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.65);
-}
-#css3colorpicker-div.controls-raised #css3colorpicker-div-2dControl.controls-invert:after,
-#css3colorpicker-div.controls-inset #css3colorpicker-div-2dControl:after {
-	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
-	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
-	-o-box-shadow: inset 0 1px 3px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
-	box-shadow: inset 0 1px 3px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
+#css3colorpicker-div-2dControl {
+	width: 11px;
+	height: 11px;
+	margin-left: -5px;
+	margin-top: -5px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-o-border-radius: 6px;
+	border-radius: 6px;
 }
 
 #css3colorpicker-div-1dColor,
@@ -381,6 +296,9 @@ input.color {
 	content: '';
 	display: block;
 }
+
+
+/* Gradients */
 
 #css3colorpicker-div.mode-h #css3colorpicker-div-1dGradient {
 	background: #000;
@@ -432,4 +350,83 @@ input.color {
 }
 #css3colorpicker-div.mode-v #css3colorpicker-div-2dGradient {
 	background: #000;
+}
+
+
+/* Control Themes */
+
+#css3colorpicker-div.controls-inset #css3colorpicker-div-1d,
+#css3colorpicker-div.controls-raised #css3colorpicker-div-1d,
+#css3colorpicker-div.controls-inset #css3colorpicker-div-2d {
+	overflow: hidden;
+}
+#css3colorpicker-div.controls-raised #css3colorpicker-div-2d,
+#css3colorpicker-div.controls-simple #css3colorpicker-div-1d,
+#css3colorpicker-div.controls-simple #css3colorpicker-div-2d {
+	overflow: visible;
+}
+
+
+#css3colorpicker-div.controls-simple #css3colorpicker-div-1dControl {
+	margin-top: -1px;
+	border: 1px solid #000;
+	-webkit-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
+	-moz-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
+	-o-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
+	box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
+}
+#css3colorpicker-div.controls-simple.controls-invert #css3colorpicker-div-1dControl {
+	border: 1px solid #fff;
+	-webkit-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
+	-moz-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
+	-o-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
+	box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
+}
+#css3colorpicker-div.controls-simple #css3colorpicker-div-2dControl {
+	border: 1px solid #000;
+	width: 9px;
+	height: 9px;
+	-webkit-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
+	-moz-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
+	-o-box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
+	box-shadow: 0 0 3px 1px rgba(255,255,255,0.65);
+}
+#css3colorpicker-div.controls-simple.controls-invert #css3colorpicker-div-2dControl {
+	width: 9px;
+	height: 9px;
+	border: 1px solid #fff;
+	-webkit-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
+	-moz-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
+	-o-box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
+	box-shadow: 0 0 3px 1px rgba(0,0,0,0.65);
+}
+
+
+#css3colorpicker-div.controls-inset.controls-invert #css3colorpicker-div-1dControl,
+#css3colorpicker-div.controls-raised #css3colorpicker-div-1dControl {
+	-webkit-box-shadow: 0 -1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.65);
+	-moz-box-shadow: 0 -1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.65);
+	-o-box-shadow: 0 -1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.65);
+	box-shadow: 0 -1px 1px rgba(255,255,255,0.65), 0 1px 1px rgba(0,0,0,0.65);
+}
+#css3colorpicker-div.controls-inset #css3colorpicker-div-1dControl,
+#css3colorpicker-div.controls-raised.controls-invert #css3colorpicker-div-1dControl {
+	-webkit-box-shadow: 0 -1px 1px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
+	-moz-box-shadow: 0 -1px 1px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
+	-o-box-shadow: 0 -1px 1px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
+	box-shadow: 0 -1px 1px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
+}
+#css3colorpicker-div.controls-inset.controls-invert #css3colorpicker-div-2dControl,
+#css3colorpicker-div.controls-raised #css3colorpicker-div-2dControl {
+	-webkit-box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.65);
+	-moz-box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.65);
+	-o-box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.65);
+	box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.65);
+}
+#css3colorpicker-div.controls-inset #css3colorpicker-div-2dControl,
+#css3colorpicker-div.controls-raised.controls-invert #css3colorpicker-div-2dControl {
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
+	-o-box-shadow: inset 0 1px 3px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
+	box-shadow: inset 0 1px 3px rgba(0,0,0,0.65), 0 1px 1px rgba(255,255,255,0.65);
 }

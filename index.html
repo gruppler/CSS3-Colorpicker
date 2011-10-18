@@ -99,18 +99,19 @@ $(function(){
 	});
 	$('#color4').colorpicker({
 		color: '#15a',
-		controlStyle: 'simple inset',
+		invertControls: false,
+		controlStyle: 'simple inset invert',
 	});
 });
 
 function cookie(name){
-    var ca = document.cookie.split(/;\s*/);
-    for(var i = 0; i < ca.length; i++){
-        if(ca[i].indexOf(name + '=') == 0){
-            return ca[i].substring(name.length + 1, ca[i].length);
-        }
-    }
-    return '';
+	var ca = document.cookie.split(/;\s*/);
+	for(var i = 0; i < ca.length; i++){
+		if(ca[i].indexOf(name + '=') == 0){
+			return ca[i].substring(name.length + 1, ca[i].length);
+		}
+	}
+	return '';
 }
 </script>
 
