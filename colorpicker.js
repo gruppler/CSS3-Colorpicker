@@ -1,6 +1,6 @@
 /*!
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.1.2
+v1.1.3
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -289,6 +289,7 @@ $.extend(Colorpicker.prototype, {
 		}
 		var $target = $(e.target);
 		if($target[0].id != $.colorpicker._mainDivId &&
+			!$target.is('label[for="'+$.colorpicker._curInst.input[0].id+'"]') &&
 			$target.parents('#' + $.colorpicker._mainDivId).length == 0 &&
 			!$target.hasClass($.colorpicker.markerClassName)
 		){
