@@ -1,5 +1,5 @@
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.1.3
+v1.2
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -32,94 +32,94 @@ Usage:
 
 Include these in your header:
 
-    <link rel="stylesheet" type="text/css" href="colorpicker.css"/>
-    <script type="text/javascript" src="jquery.min.js"></script>
-    <script type="text/javascript" src="colorpicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="colorpicker.css"/>
+  <script type="text/javascript" src="jquery.min.js"></script>
+  <script type="text/javascript" src="colorpicker.js"></script>
 
 
 Apply to your selection:
 
-    // Default options
-    $(".selector").colorpicker();
-
-    // Custom options
-    $(".selector").colorpicker({
-        realtime: false,
-        invertControls: false,
-        controlStyle: 'raised'
-    });
+  // Default options
+  $(".selector").colorpicker();
+  // Custom options
+  $(".selector").colorpicker({
+      realtime: false,
+      invertControls: false,
+      controlStyle: 'raised'
+  });
 
 --------------------------------------------------------------------------------
 
 Options:
 
-    showAnim:       true,       // Fade in/out
-    duration:       200,        // Fade duration
-    color:          'FFF',      // Default color
-    realtime:       true,       // Update instantly
-    invertControls: true,       // Invert color of mouse controls
-                                //   based on luminance
-    controlStyle:   'simple',   // Mouse control theme [simple|raised|inset];
-                                //   separate multiple themes with a space
-    swatches:       true        // [true|false] to enable/disable,
-                                //   or an array of hex codes to pre-fill
+  showAnim:       true        // [true|false] to enable/disable animations
+  duration:       200         // Fade duration
+  color:          'FFF'       // Default color
+  realtime:       true        // [true|false] to enable/disable instant updates
+  invertControls: true        // [true|false] to enable/disable inverting color
+                              //   of mouse controls based on luminance
+  controlStyle:   'simple'    // Mouse control theme [simple|raised|inset];
+                              //   separate multiple themes with a space
+  swatches:       true        // [true|false] to enable/disable,
+                              //   or an array of hex codes to pre-fill
+  alpha:          false       // [true|false] to enable/disable alpha
+  alphaHex:       false       // [true|false] to enable/disable 4-byte hex
+                              //   in the format '#AARRGGBB'
 
 
 Options can be retrieved or changed at any time:
 
-    // Get option's current value
-    $(".selector").colorpicker("option", "color");
-
-    // Set option
-    $(".selector").colorpicker("option", "color", "fff");
+  // Get option's current value
+  $(".selector").colorpicker("option", "color");
+  // Set option
+  $(".selector").colorpicker("option", "color", "fff");
 
 --------------------------------------------------------------------------------
 
 Events:
 
-    beforeShow(input, inst)     // Fired before the color picker is shown
-    onClose(hex, inst)          // Fired when the color picker is hidden
-    onSelect(hex, inst)         // Fired when the color is set
-    onAddSwatch(hex, swatches)  // Fired when a new color swatch is added
+  beforeShow(input, inst)       // Fired before the color picker is shown
+  onClose(color, inst)          // Fired when the color picker is hidden
+  onSelect(color, inst)         // Fired when the color is set
+  onAddSwatch(color, swatches)  // Fired when a new color swatch is added
 
 
 Event handlers can be set just like options:
 
-    // At initialization
-    $(".selector").colorpicker({
-        change: function(hex, inst){...}
-    });
-
-    // After initialization
-    $(".selector").colorpicker('option', 'change', function(hex, inst){...});
+  // At initialization
+  $(".selector").colorpicker({
+      change: function(color, inst){...}
+  });
+  // After initialization
+  $(".selector").colorpicker('option', 'onSelect', function(color, inst){...});
 
 --------------------------------------------------------------------------------
 
 Public Methods:
 
-    setDefaults(settings)   // Set the defaults for all colorpickers
-    addSwatch(hex, newOnly) // Add a color or array of colors to the swatches;
-                            //   preserve sorting if 'newOnly' is true
-    clearSwatches()         // Remove all swatches
-    refresh()               // Update the datepicker
-    color(args)             // A useful color class
-    hexToRgb(hex)           // Returns {r:[0-255], g:[0-255], b:[0-255]}
-    validateHex(hex, norm)  // Returns a valid hex code, optionally normalized
-    rgbToHex(rgb)           // rgb = {r:[0-255], g:[0-255], b:[0-255]}
-    intToHex(dec)           // Base conversion from 10 to 16
-    hextToInt(hex)          // Base conversion from 16 to 10
-    rgbToLum(rgb)           // rgb = {r:[0-255], g:[0-255], b:[0-255]}
-                            //   Returns integer [0-100]
-    rgbToHsv(rgb)           // rgb = {r:[0-255], g:[0-255], b:[0-255]}
-                            //   Returns {h:[0-359], s:[0-100], v:[0-100]}
-    hsvToRgb(rgb)           // hsv = {h:[0-359], s:[0-100], v:[0-100]}
-                            //   Returns {r:[0-255], g:[0-255], b:[0-255]}
+  setDefaults(settings)  // Set the defaults for all color pickers
+  addSwatch(color, newOnly) // Add a color or array of colors to the swatches;
+                         //   preserve sorting if 'newOnly' is true
+  clearSwatches()        // Remove all swatches
+  refresh()              // Update the color picker
+  color(args)            // A useful color class
+  hexToRgb(hex, alphaOn) // Returns {r:[0-255], g:[0-255], b:[0-255], a:[0-100]}
+  validateHex(hex, norm, alphaOn) // Returns a valid hex code,
+                         //   optionally normalized
+  rgbToHex(rgb, alphaOn) // rgb = {r:[0-255], g:[0-255], b:[0-255], [a:[0-100]]}
+  intToHex(dec)          // Base conversion from 10 to 16
+  hextToInt(hex)         // Base conversion from 16 to 10
+  rgbToLum(rgb)          // rgb = {r:[0-255], g:[0-255], b:[0-255]}
+                         //   Returns integer [0-100]
+  rgbToHsv(rgb)          // rgb = {r:[0-255], g:[0-255], b:[0-255]}
+                         //   Returns {h:[0-359], s:[0-100], v:[0-100]}
+  hsvToRgb(rgb)          // hsv = {h:[0-359], s:[0-100], v:[0-100]}
+                         //   Returns {r:[0-255], g:[0-255], b:[0-255]}
 
 
 To use a public method, call it like this:
 
-    // Validate 'hex'
-    $.colorpicker.validateHex('hex');
-
-    // Create a color object
-    var myColor = new $.colorpicker.color({hex: 'ccc'});
+  // Validate 'hex'
+  $.colorpicker.validateHex('hex');
+  // Create a color object
+  var myColor = new $.colorpicker.color({hex: 'ccc'});

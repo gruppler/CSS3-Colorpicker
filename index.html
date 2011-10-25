@@ -64,18 +64,18 @@ output {
 <body>
 
 <ul>
-	<li>Color 1: <div id="color1" data-color="911"></div></li>
+	<li>Color 1: <div id="color1" data-color="d911"></div></li>
 	<li>Color 2: <div id="color2"></div></li>
 	<li><label for="color3">Color 3:</label> <input id="color3" value="#80A000"/></li>
 	<li><label for="color4">Color 4:</label> <input type="text" id="color4"/></li>
-	<li><output/></li>
+	<li><output></output></li>
 </ul>
 
 <script type="text/javascript">
 $(function(){
 	$.colorpicker.setDefaults({
 		onSelect: function(color, input){
-			$("output").val(input.id+": "+color);
+			$("output").val(input.id+": "+color.hexa);
 		},
 		onAddSwatch: function(color, swatches){
 			document.cookie = 'swatches='+swatches.join(',');
@@ -85,7 +85,8 @@ $(function(){
 	$('#color1').colorpicker({
 		realtime: false,
 		invertControls: false,
-		controlStyle: 'raised'
+		controlStyle: 'raised',
+		alpha: true
 	});
 	$('#color2').colorpicker({
 		color: 'efa110',
@@ -94,13 +95,15 @@ $(function(){
 		swatches: false
 	});
 	$('#color3').colorpicker({
-		realtime: false,
-		swatches: false
+		realtime: false
 	});
 	$('#color4').colorpicker({
 		color: '#15a',
 		invertControls: false,
 		controlStyle: 'simple inset invert',
+		swatches: false,
+		alpha: true,
+		alphaHex: true
 	});
 });
 
