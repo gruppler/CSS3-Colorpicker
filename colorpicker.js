@@ -154,16 +154,26 @@ $.extend(Colorpicker.prototype, {
 		this.rgb = 'rgb(0,0,0)';
 		this.rgba = 'rgba(0,0,0,1)';
 
+		// Floating-point
+		this._a = 1;
+		this._h = 0;
+		this._s = 0;
+		this._v = 0;
+
 		this.setRgb = function(r, g, b, a){
-			this.r = Math.max(0, Math.min(255, parseInt(r)));
-			this.g = Math.max(0, Math.min(255, parseInt(g)));
-			this.b = Math.max(0, Math.min(255, parseInt(b)));
-			this.a = typeof(a) == 'undefined' ? this.a || 100 : Math.max(0, Math.min(100, parseInt(a)));
+			this.r = Math.max(0, Math.min(255, Math.round(r)));
+			this.g = Math.max(0, Math.min(255, Math.round(g)));
+			this.b = Math.max(0, Math.min(255, Math.round(b)));
+			this._a = !isset(a) ? this._a || 100 : Math.max(0, Math.min(100, parseFloat(a)));
+			this.a = Math.round(this._a);
 
 			var newHsv = $.colorpicker.rgbToHsv(this);
-			this.h = newHsv.h;
-			this.s = newHsv.s;
-			this.v = newHsv.v;
+			this._h = newHsv.h;
+			this._s = newHsv.s;
+			this._v = newHsv.v;
+			this.h = Math.round(newHsv.h);
+			this.s = Math.round(newHsv.s);
+			this.v = Math.round(newHsv.v);
 			this.l = $.colorpicker.rgbToLum(this);
 
 			this.hex = $.colorpicker.rgbToHex(this);
@@ -173,15 +183,19 @@ $.extend(Colorpicker.prototype, {
 		};
 
 		this.setHsv = function(h, s, v, a){
-			this.h = Math.max(0, Math.min(360, parseInt(h)));
-			this.s = Math.max(0, Math.min(100, parseInt(s)));
-			this.v = Math.max(0, Math.min(100, parseInt(v)));
-			this.a = typeof(a) == 'undefined' ? this.a || 100 : Math.max(0, Math.min(100, parseInt(a)));
+			this._h = Math.max(0, Math.min(360, parseFloat(h)));
+			this._s = Math.max(0, Math.min(100, parseFloat(s)));
+			this._v = Math.max(0, Math.min(100, parseFloat(v)));
+			this.h = Math.round(this._h);
+			this.s = Math.round(this._s);
+			this.v = Math.round(this._v);
+			this._a = !isset(a) ? this._a || 100 : Math.max(0, Math.min(100, parseFloat(a)));
+			this.a = Math.round(this._a);
 
 			var newRgb = $.colorpicker.hsvToRgb(this);
-			this.r = newRgb.r;
-			this.g = newRgb.g;
-			this.b = newRgb.b;
+			this.r = Math.round(newRgb.r);
+			this.g = Math.round(newRgb.g);
+			this.b = Math.round(newRgb.b);
 			this.l = $.colorpicker.rgbToLum(this);
 
 			this.hex = $.colorpicker.rgbToHex(newRgb);
@@ -198,12 +212,16 @@ $.extend(Colorpicker.prototype, {
 			this.r = newRgb.r;
 			this.g = newRgb.g;
 			this.b = newRgb.b;
-			this.a = newRgb.a;
+			this._a = newRgb.a;
+			this.a = Math.round(newRgb.a);
 
 			var newHsv = $.colorpicker.rgbToHsv(newRgb);
-			this.h = newHsv.h;
-			this.s = newHsv.s;
-			this.v = newHsv.v;
+			this._h = newHsv.h;
+			this._s = newHsv.s;
+			this._v = newHsv.v;
+			this.h = Math.round(newHsv.h);
+			this.s = Math.round(newHsv.s);
+			this.v = Math.round(newHsv.v);
 			this.l = $.colorpicker.rgbToLum(this);
 
 			this.rgb = 'rgb('+this.r+','+this.g+','+this.b+')';
@@ -294,13 +312,14 @@ $.extend(Colorpicker.prototype, {
 		if(typeof(color) == 'string' || typeof(color) == 'number'){
 			color = new $.colorpicker.color({hex:color});
 		}
+
 		var onSelect = !this._isCurrentColor(color) ?
 			this._get(inst, 'onSelect') :
 			null;
 
-		inst.settings.color = color;
+		inst.settings.color = new $.colorpicker.color({hex:color.hexa});
 		if(!this._isDragging){
-			inst.color = color;
+			inst.color = new $.colorpicker.color({hex:color.hexa});
 		}
 		this._updateTarget(inst, force);
 
@@ -337,6 +356,11 @@ $.extend(Colorpicker.prototype, {
 
 	_optionColorpicker: function(target, name, value){
 		var inst = this._getInst(target);
+		var show = false;
+		if(inst && this._curInst == inst){
+			this._hideColorpicker(target, true);
+			show = true;
+		}
 		if(arguments.length == 2 && typeof name == 'string'){
 			return (name == 'defaults' ? $.extend({}, $.colorpicker._defaults) :
 				(inst ? (name == 'all' ? $.extend({}, inst.settings) :
@@ -355,14 +379,14 @@ $.extend(Colorpicker.prototype, {
 			}
 		}
 		if(inst){
-			if(this._curInst == inst){
-				this._updateColorpicker();
-			}
 			extendRemove(inst.settings, settings);
+		}
+		if(show){
+			this._showColorpicker(target, true);
 		}
 	},
 
-	_showColorpicker: function(input){
+	_showColorpicker: function(input, noAnim){
 		input = input.target || input;
 		var $input = $(input);
 		if(input.disabled){
@@ -378,7 +402,7 @@ $.extend(Colorpicker.prototype, {
 		$.colorpicker._updateColorpicker();
 		inst.input.addClass('selected');
 
-		var showAnim = this._get(inst, 'showAnim');
+		var showAnim = !noAnim && this._get(inst, 'showAnim');
 		var duration = this._get(inst, 'duration');
 		var postProcess = function(){
 			$.colorpicker.cpDiv.addClass('visible');
@@ -431,9 +455,9 @@ $.extend(Colorpicker.prototype, {
 		cpDiv.css({top:0, left:0}).offset(offset);
 	},
 
-	_hideColorpicker: function(input){
+	_hideColorpicker: function(input, noAnim){
 		var inst = this._curInst;
-		if(!inst || (input && inst != $.data(input, PROP_NAME))){
+		if(!inst || (input && inst != this._getInst(input))){
 			return;
 		}
 		var postProcess = function(){
@@ -441,7 +465,7 @@ $.extend(Colorpicker.prototype, {
 			$.colorpicker._curInst = null;
 		};
 		if(this._colorpickerShowing){
-			var showAnim = this._get(inst, 'showAnim');
+			var showAnim = !noAnim && this._get(inst, 'showAnim');
 			var duration = this._get(inst, 'duration');
 			this.cpDiv[showAnim ? 'fadeOut' : 'hide']((showAnim ? duration : null), postProcess);
 			if(!showAnim){
@@ -520,7 +544,7 @@ $.extend(Colorpicker.prototype, {
 		}
 		var ah = this._get(inst, 'alphaHex');
 		for(var i in this.cpDiv.inputs){
-			if(i && inst.color[i] !== undefined){
+			if(i && isset(inst.color[i])){
 				if(force || !this.cpDiv.inputs[i].is(':focus')){
 					this.cpDiv.inputs[i].val(inst.color[i == 'hex' && ah ? 'hexa' : i]);
 				}
@@ -585,24 +609,24 @@ $.extend(Colorpicker.prototype, {
 		var x, y, z, a;
 		switch(this.mode){
 			case 'h':
-				x = inst.color.s*255/100;
-				y = 255 - inst.color.v*255/100;
-				z = 255 - inst.color.h*255/360;
-				a = inst.color.a*255/100;
+				x = inst.color._s*255/100;
+				y = 255 - inst.color._v*255/100;
+				z = 255 - inst.color._h*255/360;
+				a = inst.color._a*255/100;
 			break;
 
 			case 's':
-				x = inst.color.h*255/360;
-				y = 255 - inst.color.v*255/100;
-				z = 255 - inst.color.s*255/100;
-				a = inst.color.a*255/100;
+				x = inst.color._h*255/360;
+				y = 255 - inst.color._v*255/100;
+				z = 255 - inst.color._s*255/100;
+				a = inst.color._a*255/100;
 			break;
 
 			case 'v':
-				x = inst.color.h*255/360;
-				y = 255 - inst.color.s*255/100;
-				z = 255 - inst.color.v*255/100;
-				a = inst.color.a*255/100;
+				x = inst.color._h*255/360;
+				y = 255 - inst.color._s*255/100;
+				z = 255 - inst.color._v*255/100;
+				a = inst.color._a*255/100;
 			break;
 		}
 
@@ -615,7 +639,7 @@ $.extend(Colorpicker.prototype, {
 		if(!$.colorpicker._curInst) return;
 		var inst = $.colorpicker._curInst;
 
-		cpDiv.d1Div.control.css({top: Math.max(0, Math.min(255, parseInt(z)))+'px'});
+		cpDiv.d1Div.control.css({top: Math.max(0, Math.min(255, Math.round(z)))+'px'});
 
 		if(!moveOnly){
 			switch($.colorpicker.mode){
@@ -629,8 +653,8 @@ $.extend(Colorpicker.prototype, {
 				break;
 			}
 
-			inst.color[$.colorpicker.mode] = z;
-			inst.color.setHsv(inst.color.h, inst.color.s, inst.color.v, inst.color.a);
+			inst.color['_'+$.colorpicker.mode] = z;
+			inst.color.setHsv(inst.color._h, inst.color._s, inst.color._v, inst.color.a);
 			$.colorpicker._updateColorpicker(true);
 		}
 	},
@@ -640,8 +664,8 @@ $.extend(Colorpicker.prototype, {
 		var inst = $.colorpicker._curInst;
 
 		cpDiv.d2Div.control.css({
-			left: Math.max(0, Math.min(255, parseInt(x)))+'px',
-			top: Math.max(0, Math.min(255, parseInt(y)))+'px'
+			left: Math.max(0, Math.min(255, Math.round(x)))+'px',
+			top: Math.max(0, Math.min(255, Math.round(y)))+'px'
 		});
 
 		if(!moveOnly){
@@ -649,20 +673,20 @@ $.extend(Colorpicker.prototype, {
 				case 'h':
 					x = x*100/256;
 					y = 100 - y*100/256;
-					inst.color.s = x;
-					inst.color.v = y;
+					inst.color._s = x;
+					inst.color._v = y;
 				break;
 
 				case 's':
 				case 'v':
 					x = x*360/256;
 					y = 100 - y*100/256;
-					inst.color.h = x;
-					inst.color[$.colorpicker.mode == 's' ? 'v' : 's'] = y;
+					inst.color._h = x;
+					inst.color[$.colorpicker.mode == 's' ? '_v' : '_s'] = y;
 				break;
 			}
 
-			inst.color.setHsv(inst.color.h, inst.color.s, inst.color.v, inst.color.a);
+			inst.color.setHsv(inst.color._h, inst.color._s, inst.color._v, inst.color.a);
 			$.colorpicker._updateColorpicker(true);
 		}
 	},
@@ -677,7 +701,7 @@ $.extend(Colorpicker.prototype, {
 			a *= 100/256;
 
 			inst.color.a = a;
-			inst.color.setHsv(inst.color.h, inst.color.s, inst.color.v, inst.color.a);
+			inst.color.setHsv(inst.color._h, inst.color._s, inst.color._v, inst.color.a);
 			$.colorpicker._updateColorpicker(true);
 		}
 	},
@@ -749,6 +773,9 @@ $.extend(Colorpicker.prototype, {
 		var inst = this._curInst;
 		if(!inst || !color){
 			return;
+		}
+		if(typeof(color) == 'string' || typeof(color) == 'number'){
+			color = new this.color({hex:color});
 		}
 		return this._get(inst, 'alpha') ? (
 			color.hexa == inst.settings.color.hexa &&
@@ -827,7 +854,7 @@ $.extend(Colorpicker.prototype, {
 	},
 
 	_get: function(inst, key){
-		return inst.settings[key] !== undefined ? inst.settings[key] : this._defaults[key];
+		return isset(inst.settings[key]) ? inst.settings[key] : this._defaults[key];
 	},
 
 	_getInst: function(target){
@@ -858,7 +885,7 @@ $.extend(Colorpicker.prototype, {
 			b = hex.substring(6,8);
 		}
 
-		return { r:this.hexToInt(r), g:this.hexToInt(g), b:this.hexToInt(b), a:Math.round(100*this.hexToInt(a)/255) };
+		return { r:this.hexToInt(r), g:this.hexToInt(g), b:this.hexToInt(b), a:(100*this.hexToInt(a)/255) };
 	},
 
 	_hexRegExp: /[a-f0-9]{0,2}([a-f0-9]{6})|[a-f0-9]?([a-f0-9]{3})/i,
@@ -867,7 +894,7 @@ $.extend(Colorpicker.prototype, {
 	validateHex: function(hex, normalize, alphaOn){
 		if(!hex) return false;
 		hex = (''+hex).match(alphaOn?this._hexaRegExp:this._hexRegExp);
-		hex = hex[1] || hex[2] || (alphaOn ? '00000000' : '000000');
+		hex = hex ? (hex[1] || hex[2]) : (alphaOn ? '00000000' : '000000');
 		if(normalize){
 			hex = hex.toUpperCase();
 			if(hex.length == 3){
@@ -910,7 +937,7 @@ $.extend(Colorpicker.prototype, {
 		var g = rgb.g / 255;
 		var b = rgb.b / 255;
 
-		hsv = {h:0, s:0, v:0, a:rgb.a};
+		hsv = {h:0, s:0, v:0, a:(isset(rgb._a) ? rgb._a : rgb.a)};
 
 		var min = 0
 		var max = 0;
@@ -941,31 +968,31 @@ $.extend(Colorpicker.prototype, {
 				hsv.h = 4 + (r - g) / delta;
 			}
 
-			hsv.h = Math.round(hsv.h * 60);
+			hsv.h = hsv.h * 60;
 			if(hsv.h < 0){
 				hsv.h += 360;
 			}
 		}
 
-		hsv.s = Math.abs(Math.round(hsv.s * 100));
-		hsv.v = Math.abs(Math.round(hsv.v * 100));
+		hsv.s = Math.abs(hsv.s * 100);
+		hsv.v = Math.abs(hsv.v * 100);
 
 		return hsv;
 	},
 
 	hsvToRgb: function(hsv){
 
-		rgb = {r:0, g:0, b:0, a:hsv.a};
+		rgb = {r:0, g:0, b:0, a:(isset(hsv._a) ? hsv._a : hsv.a)};
 
-		var h = hsv.h;
-		var s = hsv.s;
-		var v = hsv.v;
+		var h = isset(hsv._h) ? hsv._h : hsv.h;
+		var s = isset(hsv._s) ? hsv._s : hsv.s;
+		var v = isset(hsv._v) ? hsv._v : hsv.v;
 
 		if(s == 0){
 			if(v == 0){
 				rgb.r = rgb.g = rgb.b = 0;
 			}else{
-				rgb.r = rgb.g = rgb.b = Math.abs(Math.round(v * 255 / 100));
+				rgb.r = rgb.g = rgb.b = Math.abs(v * 255 / 100);
 			}
 		}else{
 			if(h == 360){
@@ -1205,6 +1232,10 @@ function extendRemove(target, props) {
 	}
 	return target;
 };
+
+function isset(x){
+	return x !== undefined;
+}
 
 $.colorpicker = new Colorpicker();
 $.colorpicker.initialized = false;

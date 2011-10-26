@@ -14,7 +14,7 @@ input.color {
 	text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 input.color.alphaHex {
-	width: 5em;
+	width: 6em;
 }
 .color.selected {
 	box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 5px rgba(0,0,0,0.75);
@@ -55,11 +55,9 @@ input.color.alphaHex {
 	width: 378px;
 	height: 0;
 	overflow: hidden;
-	opacity: 0;
 }
 #css3colorpicker-div.swatchesOn #css3colorpicker-div-swatchContainer {
 	height: 38px;
-	opacity: 1;
 }
 #css3colorpicker-div-swatches {
 	width: 378px;
@@ -167,7 +165,7 @@ input.color.alphaHex {
 	position: relative;
 	height: 26px;
 	line-height: 23px;
-	margin: 2px 0;
+	margin: 2px 0 0;
 	cursor: default;
 	overflow: hidden;
 	text-shadow: 0px 1px 0 rgba(255,255,255,0.75);
@@ -180,12 +178,10 @@ input.color.alphaHex {
 #css3colorpicker-div #css3colorpicker-div-inputContainer li.alpha {
 	height: 0;
 	margin: 0;
-	opacity: 0;
 }
 #css3colorpicker-div.alphaOn #css3colorpicker-div-inputContainer li.alpha {
 	height: 26px;
-	margin: 2px 0;
-	opacity: 1;
+	margin: 2px 0 0;
 }
 #css3colorpicker-div-inputContainer input {
 	width: 45px;
@@ -236,13 +232,11 @@ input.color.alphaHex {
 	cursor: e-resize;
 	width: 256px;
 	height: 0;
-	opacity: 0;
 	bottom: 0;
 	overflow: hidden;
 }
 #css3colorpicker-div.alphaOn #css3colorpicker-div-alpha {
 	height: 20px;
-	opacity: 1;
 }
 #css3colorpicker-div-alpha:after {
 	content: '';
@@ -279,6 +273,10 @@ input.color.alphaHex {
 	width: 1px;
 	height: auto;
 	bottom: 0;
+	display: none;
+}
+#css3colorpicker-div.alphaOn #css3colorpicker-div-alphaControl {
+	display: block;
 }
 
 #css3colorpicker-div-1dColor,
