@@ -1,4 +1,5 @@
-.color {
+.color,
+.colorContainer {
 	display: inline-block;
 	vertical-align: middle;
 	width: 3em;
@@ -11,10 +12,10 @@ input.color {
 	width: 4em;
 	border: 0 none;
 	padding: 0.2em;
-	text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	text-shadow: 0 0 0 transparent, 0 1px 3px rgba(0,0,0,0.5);
 }
 input.color.alphaHex {
-	width: 6em;
+	width: 5.25em;
 }
 .color.selected {
 	box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 5px rgba(0,0,0,0.75);
@@ -23,15 +24,15 @@ input.color.alphaHex {
 	box-shadow: 0 0 3px 3px #d00;
 }
 .colorContainer {
-	display: inline-block;
-	vertical-align: middle;
-	margin: 0.1em;
+	width: auto;
+	height: auto;
 	overflow: visible;
-	border-radius: 2px;
+	box-shadow: none;
 	background: url('transparent.png') repeat;
 }
 .colorContainer > .color {
 	margin: 0;
+	display: block;
 }
 
 #css3colorpicker-div {
@@ -168,7 +169,7 @@ input.color.alphaHex {
 	margin: 2px 0 0;
 	cursor: default;
 	overflow: hidden;
-	text-shadow: 0px 1px 0 rgba(255,255,255,0.75);
+	text-shadow: 0 0 0 transparent, 0px 1px 0 rgba(255,255,255,0.75);
 }
 #css3colorpicker-div-inputContainer li.selected {
 	font-weight: bold;

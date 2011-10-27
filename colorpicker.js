@@ -1,6 +1,6 @@
 /*!
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.2
+v1.2.1
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -313,16 +313,13 @@ $.extend(Colorpicker.prototype, {
 			color = new $.colorpicker.color({hex:color});
 		}
 
-		var onSelect = !this._isCurrentColor(color) ?
-			this._get(inst, 'onSelect') :
-			null;
-
 		inst.settings.color = new $.colorpicker.color({hex:color.hexa});
 		if(!this._isDragging){
 			inst.color = new $.colorpicker.color({hex:color.hexa});
 		}
 		this._updateTarget(inst, force);
 
+		var onSelect = this._get(inst, 'onSelect');
 		if(typeof(onSelect) == 'function'){
 			onSelect(color, inst);
 		}
@@ -357,26 +354,27 @@ $.extend(Colorpicker.prototype, {
 	_optionColorpicker: function(target, name, value){
 		var inst = this._getInst(target);
 		var show = false;
-		if(inst && this._curInst == inst){
-			this._hideColorpicker(target, true);
-			show = true;
-		}
 		if(arguments.length == 2 && typeof name == 'string'){
 			return (name == 'defaults' ? $.extend({}, $.colorpicker._defaults) :
 				(inst ? (name == 'all' ? $.extend({}, inst.settings) :
 				this._get(inst, name)) : null));
 		}
+		if(inst && this._curInst == inst){
+			this._hideColorpicker(target, true);
+			show = true;
+		}
 		var settings = name || {};
 		if(typeof name == 'string'){
 			settings = {};
-			settings[name] = value;
 			if(inst && name == 'color' && value){
+				value = new this.color({hex:value});
 				this._setColor(inst, value, true);
 				this.addSwatch(value, true);
 			}
 			if(name == 'swatches' && value){
 				this.addSwatch(value);
 			}
+			settings[name] = value;
 		}
 		if(inst){
 			extendRemove(inst.settings, settings);
@@ -427,8 +425,6 @@ $.extend(Colorpicker.prototype, {
 		if(!showAnim){
 			postProcess();
 		}
-
-		this._positionColorpicker();
 
 		this._positionColorpicker();
 	},
@@ -749,13 +745,15 @@ $.extend(Colorpicker.prototype, {
 		if(!inst){
 			return;
 		}
+
 		var color = color || inst.color;
 		if(typeof(color) == 'string' || typeof(color) == 'number'){
 			color = new this.color({hex:color});
-		}
-		if(!this._get(inst, 'alpha')){
-			color = new this.color(color);
-			color.a = 100;
+			if(!this._get(inst, 'alpha')){
+				color.a = color._a = 100;
+			}
+		}else{
+			color = new this.color({hex:color[this._get(inst, 'alpha') ? 'hexa' : 'hex']});
 		}
 
 		if(this._isCurrentColor(color)){
