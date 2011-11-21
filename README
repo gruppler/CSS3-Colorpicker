@@ -1,5 +1,5 @@
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.2.1
+v1.2.2
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -88,7 +88,7 @@ Event handlers can be set just like options:
 
   // At initialization
   $(".selector").colorpicker({
-      change: function(color, inst){...}
+      onSelect: function(color, inst){...}
   });
   // After initialization
   $(".selector").colorpicker('option', 'onSelect', function(color, inst){...});

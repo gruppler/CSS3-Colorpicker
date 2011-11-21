@@ -329,7 +329,6 @@ input.color.alphaHex {
 }
 #css3colorpicker-div.mode-h #css3colorpicker-div-2dGradient:after,
 #css3colorpicker-div.mode-s #css3colorpicker-div-2dGradient,
-#css3colorpicker-div.mode-s #css3colorpicker-div-1dGradient,
 #css3colorpicker-div.mode-v #css3colorpicker-div-1dGradient {
 	background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,1)));
@@ -364,7 +363,8 @@ input.color.alphaHex {
 	background: -ms-linear-gradient(left, #ff0000 0%,#ffff00 16.67%,#00ff00 33.33%,#00ffff 50%,#0000ff 66.67%,#ff00ff 83.33%,#ff0000 100%);
 	background: linear-gradient(left, #ff0000 0%,#ffff00 16.67%,#00ff00 33.33%,#00ffff 50%,#0000ff 66.67%,#ff00ff 83.33%,#ff0000 100%);
 }
-#css3colorpicker-div.mode-v #css3colorpicker-div-2dGradient {
+#css3colorpicker-div.mode-v #css3colorpicker-div-2dGradient,
+#css3colorpicker-div.mode-s #css3colorpicker-div-1dGradient {
 	background: #000;
 }
 

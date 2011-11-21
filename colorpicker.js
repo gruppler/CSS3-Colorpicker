@@ -1,6 +1,6 @@
 /*!
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.2.1
+v1.2.2
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -572,7 +572,7 @@ $.extend(Colorpicker.prototype, {
 				this.cpDiv.d1Div.colorDiv.css('background-color', new this.color({
 					h: inst.color.h,
 					s: 100,
-					v: inst.color.v
+					v: 100
 				}).rgb);
 				this.cpDiv.d1Div.gradientDiv.css('opacity', 1 - inst.color.v/100);
 				this.cpDiv.d1Div.colorDiv.css('opacity', 1);
