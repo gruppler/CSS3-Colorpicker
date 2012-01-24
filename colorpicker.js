@@ -1,6 +1,6 @@
 /*!
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.2.2
+v1.3
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -91,6 +91,8 @@ function Colorpicker(){
 		showAnim: true,			// Fade in/out
 		duration: 200,			// Fade duration
 		color: 'FFFFFF',		// Default color
+		allowNull: false,		// Allow an empty color value; otherwise default
+								//   to the default color
 		realtime: true,			// Update instantly
 		invertControls: true,	// Invert color of mouse controls based on luminance
 		controlStyle: 'simple',	// Mouse control theme [simple|raised|inset];
@@ -117,6 +119,7 @@ $.extend(Colorpicker.prototype, {
 	minLum: 50,
 	swatches: [],
 	swatchLimit: 15,
+
 
 	setDefaults: function(settings){
 		extendRemove(this._defaults, settings || {});
@@ -161,6 +164,8 @@ $.extend(Colorpicker.prototype, {
 		this._v = 0;
 
 		this.setRgb = function(r, g, b, a){
+			this.isNull = false;
+
 			this.r = Math.max(0, Math.min(255, Math.round(r)));
 			this.g = Math.max(0, Math.min(255, Math.round(g)));
 			this.b = Math.max(0, Math.min(255, Math.round(b)));
@@ -183,6 +188,8 @@ $.extend(Colorpicker.prototype, {
 		};
 
 		this.setHsv = function(h, s, v, a){
+			this.isNull = false;
+
 			this._h = Math.max(0, Math.min(360, parseFloat(h)));
 			this._s = Math.max(0, Math.min(100, parseFloat(s)));
 			this._v = Math.max(0, Math.min(100, parseFloat(v)));
@@ -205,6 +212,8 @@ $.extend(Colorpicker.prototype, {
 		};
 
 		this.setHex = function(hex){
+			this.isNull = false;
+
 			this.hexa = $.colorpicker.validateHex(hex, true, true);
 			this.hex = $.colorpicker.validateHex(hex, true);
 
@@ -270,10 +279,9 @@ $.extend(Colorpicker.prototype, {
 
 		var inst = this._newInst(input);
 		inst.settings = $.extend({}, settings || {}, inlineSettings || {});
+		input.wrap($('<div/>').addClass('colorContainer'));
 		if(this._get(inst, 'alpha')){
-			input.addClass('alpha')[inst.settings.alphaHex ? 'addClass' : 'removeClass']('alphaHex').wrap(
-				$('<div/>').addClass('colorContainer')
-			);
+			input.addClass('alpha')[inst.settings.alphaHex ? 'addClass' : 'removeClass']('alphaHex');
 		}else{
 			input.removeClass('alpha').removeClass('alphaHex');
 		}
@@ -309,6 +317,10 @@ $.extend(Colorpicker.prototype, {
 	},
 
 	_setColor: function(inst, color, force){
+		if(!color || color.isNull){
+			color = new $.colorpicker.color({hex:this._defaults.color});
+			color.isNull = this._get(inst, 'allowNull');
+		}
 		if(typeof(color) == 'string' || typeof(color) == 'number'){
 			color = new $.colorpicker.color({hex:color});
 		}
@@ -317,11 +329,15 @@ $.extend(Colorpicker.prototype, {
 		if(!this._isDragging){
 			inst.color = new $.colorpicker.color({hex:color.hexa});
 		}
+		inst.color.isNull = inst.settings.color.isNull = color.isNull;
 		this._updateTarget(inst, force);
 
-		var onSelect = this._get(inst, 'onSelect');
-		if(typeof(onSelect) == 'function'){
-			onSelect(color, inst);
+		if(!this._isLastColor(color)){
+			inst.lastColor = color.isNull ? null : color.hexa;
+			var onSelect = this._get(inst, 'onSelect');
+			if(typeof(onSelect) == 'function'){
+				onSelect(color.isNull ? null : color, inst);
+			}
 		}
 	},
 
@@ -331,7 +347,8 @@ $.extend(Colorpicker.prototype, {
 			id: id,
 			input: target,
 			cpDiv: cpDiv,
-			color: new $.colorpicker.color()
+			color: new $.colorpicker.color(),
+			lastColor: null
 		};
 		target.data(PROP_NAME, inst);
 		return inst;
@@ -396,6 +413,7 @@ $.extend(Colorpicker.prototype, {
 			this.cpDiv.stop(true, true);
 		}
 		this._curInst = inst;
+		inst.lastColor = inst.color.isNull ? null : inst.color.hexa;
 		var a = this._get(inst, 'alpha');
 		$.colorpicker._updateColorpicker();
 		inst.input.addClass('selected');
@@ -413,7 +431,7 @@ $.extend(Colorpicker.prototype, {
 		cpDiv[showAnim?'addClass':'removeClass']('animOn');
 		cpDiv[a?'addClass':'removeClass']('alphaOn');
 		cpDiv[this._get(inst, 'swatches')?'addClass':'removeClass']('swatchesOn');
-		this.cpDiv.oldColorDiv.data('color', inst.color.hexa).css('background-color', inst.color[a?'rgba':'rgb']);
+		this.cpDiv.oldColorDiv.data('color', inst.color.isNull ? null : inst.color.hexa).css('background-color', inst.color[a?'rgba':'rgb']);
 
 		var beforeShow = this._get(inst, 'beforeShow');
 		if(typeof(beforeShow) == 'function'){
@@ -501,7 +519,7 @@ $.extend(Colorpicker.prototype, {
 			return;
 		}
 		var a = this._get(inst, 'alpha');
-		this.cpDiv.colorDiv.data('color', inst.color.hexa).css('background-color', inst.color[a?'rgba':'rgb']);
+		this.cpDiv.colorDiv.data('color', inst.color.isNull ? null : inst.color.hexa).css('background-color', inst.color[a?'rgba':'rgb']);
 		cpDiv.d2Div.control.css('background-color', inst.color.rgb);
 		$.colorpicker._updateInputs(force);
 		$.colorpicker._updateMaps();
@@ -514,19 +532,27 @@ $.extend(Colorpicker.prototype, {
 	_updateTarget: function(inst, force){
 		var a = this._get(inst, 'alpha');
 		var ah = this._get(inst, 'alphaHex');
-		inst.input.css({
-			backgroundColor: inst.color[a?'rgba':'rgb'],
-			color: (inst.color.l < $.colorpicker.minLum) ? '#fff' : '#000'
-		});
+		if(inst.color.isNull){
+			inst.input.parent().addClass('color-null');
+		}else{
+			inst.input.css({
+				backgroundColor: inst.color[a?'rgba':'rgb'],
+				color: (inst.color.l < $.colorpicker.minLum) ? '#fff' : '#000'
+			}).parent().removeClass('color-null');
+		}
 
-		inst.input.data('color', inst.color.hexa);
+		inst.input.data('color', inst.color.isNull ? null : inst.color.hexa);
 		if(force || !inst.input.is(':focus')){
 			var val = inst.input.val();
-			inst.input.val(
-				val.indexOf('#') >= 0 ?
-				'#' + inst.color[ah?'hexa':'hex'] :
-				inst.color[ah?'hexa':'hex']
-			)
+			if(inst.color.isNull){
+				inst.input.val('');
+			}else{
+				inst.input.val(
+					val.indexOf('#') >= 0 ?
+					'#' + inst.color[ah?'hexa':'hex'] :
+					inst.color[ah?'hexa':'hex']
+				)
+			}
 			if(val != inst.input.val()){
 				inst.input.trigger('change');
 			}
@@ -542,7 +568,11 @@ $.extend(Colorpicker.prototype, {
 		for(var i in this.cpDiv.inputs){
 			if(i && isset(inst.color[i])){
 				if(force || !this.cpDiv.inputs[i].is(':focus')){
-					this.cpDiv.inputs[i].val(inst.color[i == 'hex' && ah ? 'hexa' : i]);
+					if(i == 'hex'){
+						this.cpDiv.inputs[i].val(inst.color.isNull ? '' : inst.color[ah ? 'hexa' : i]);
+					}else{
+						this.cpDiv.inputs[i].val(inst.color[i]);
+					}
 				}
 			}
 		}
@@ -746,7 +776,13 @@ $.extend(Colorpicker.prototype, {
 			return;
 		}
 
-		var color = color || inst.color;
+		if(!isset(color)){
+			var color = inst.color;
+		}else if(!color){
+			var isNull = this._get(inst, 'allowNull');
+			color = this._defaults.color;
+		}
+
 		if(typeof(color) == 'string' || typeof(color) == 'number'){
 			color = new this.color({hex:color});
 			if(!this._get(inst, 'alpha')){
@@ -755,6 +791,7 @@ $.extend(Colorpicker.prototype, {
 		}else{
 			color = new this.color({hex:color[this._get(inst, 'alpha') ? 'hexa' : 'hex']});
 		}
+		color.isNull = isNull;
 
 		if(this._isCurrentColor(color)){
 			$.colorpicker._hideColorpicker();
@@ -769,8 +806,11 @@ $.extend(Colorpicker.prototype, {
 
 	_isCurrentColor: function(color){
 		var inst = this._curInst;
-		if(!inst || !color){
+		if(!inst){
 			return;
+		}
+		if(!color || color.isNull){
+			return inst.settings.color.isNull && inst.color.isNull;
 		}
 		if(typeof(color) == 'string' || typeof(color) == 'number'){
 			color = new this.color({hex:color});
@@ -784,9 +824,27 @@ $.extend(Colorpicker.prototype, {
 		);
 	},
 
+	_isLastColor: function(color){
+		var inst = this._curInst;
+		if(!inst){
+			return;
+		}
+		if(!color || color.isNull){
+			return inst.lastColor === null;
+		}
+		var lastColor = new this.color({hex: inst.lastColor});
+
+		if(typeof(color) == 'string' || typeof(color) == 'number'){
+			color = new this.color({hex:color});
+		}
+		return this._get(inst, 'alpha')
+			? color.hexa == lastColor.hexa
+			: color.hex == lastColor.hex;
+	},
+
 	addSwatch: function(color, newOnly){
 		var inst = this._curInst;
-		if(inst && !this._get(inst, 'swatches') || !color){
+		if(inst && !this._get(inst, 'swatches') || !color || color.isNull){
 			return false;
 		}
 		if(typeof(color) == 'string' || typeof(color) == 'number'){
@@ -1149,9 +1207,16 @@ $.fn.colorpicker = function(options){
 									return;
 							}
 						}).keyup(function(){
-							if(!$.colorpicker._curInst) return;
-							$.colorpicker._curInst.color.setHex(cpDiv.inputs.hex.val());
-							$.colorpicker._updateColorpicker();
+							var inst = $.colorpicker._curInst;
+							if(!inst) return;
+							if(!cpDiv.inputs.hex.val()){
+								inst.color = new $.colorpicker.color({hex: $.colorpicker._defaults.color});
+								inst.color.isNull = $.colorpicker._get(inst, 'allowNull');
+								$.colorpicker._updateColorpicker();
+							}else{
+								inst.color.setHex(cpDiv.inputs.hex.val());
+								$.colorpicker._updateColorpicker();
+							}
 						});
 					break;
 				}

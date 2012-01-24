@@ -5,7 +5,9 @@
 	width: 3em;
 	height: 1.5em;
 	margin: 0.1em;
-	box-shadow: 0 1px 0 rgba(255,255,255,0.7), inset 0 1px 5px rgba(0,0,0,0.75);
+	box-shadow: 0 1px 0 rgba(255,255,255,0.7),
+		inset 0 1px 5px rgba(0,0,0,0.75),
+		inset 0 -1px 1px 1px rgba(255,255,255,0.5);
 	border-radius: 2px;
 }
 input.color {
@@ -33,6 +35,16 @@ input.color.alphaHex {
 .colorContainer > .color {
 	margin: 0;
 	display: block;
+}
+.colorContainer.color-null {
+	background: none;
+}
+.colorContainer.color-null .color {
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.3), 0 1px 1px rgba(255,255,255,0.7);
+	background-color: transparent !important;
+}
+.colorContainer.color-null .color.selected {
+	box-shadow: 0 0 1px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.8);
 }
 
 #css3colorpicker-div {
@@ -121,7 +133,7 @@ input.color.alphaHex {
 	bottom: 0;
 	left: 0;
 	border-radius: 2px 0 0 2px;
-	box-shadow: inset 0 1px 10px rgba(0,0,0,0.65);
+	box-shadow: inset 0 1px 10px rgba(0,0,0,0.65), inset 0 -1px 1px 1px rgba(255,255,255,0.5);
 }
 #css3colorpicker-div-colorOld {
 	width: 35px;
@@ -131,7 +143,7 @@ input.color.alphaHex {
 	bottom: 0;
 	right: 0;
 	border-radius: 0 2px 2px 0;
-	box-shadow: inset 1px 1px 1px rgba(255,255,255,0.25), 1px 1px 2px rgba(0,0,0,0.25);
+	box-shadow: inset 0 1px 1px 1px rgba(255,255,255,0.25), 1px 1px 2px rgba(0,0,0,0.25);
 }
 #css3colorpicker-div-inputContainer {
 	width: 85px;

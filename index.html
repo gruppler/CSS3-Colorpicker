@@ -68,6 +68,7 @@ output {
 	<li>Color 2: <div id="color2"></div></li>
 	<li><label for="color3">Color 3:</label> <input id="color3" value="#80A000"/></li>
 	<li><label for="color4">Color 4:</label> <input type="text" id="color4"/></li>
+	<li><label for="color5">Color 5:</label> <input type="text" id="color5"/></li>
 	<li><output></output></li>
 </ul>
 
@@ -75,7 +76,7 @@ output {
 $(function(){
 	$.colorpicker.setDefaults({
 		onSelect: function(color, input){
-			$("output").val(input.id+": "+color.hexa);
+			$("output").val(input.id+": "+(color ? color.hexa : 'null'));
 		},
 		onAddSwatch: function(color, swatches){
 			document.cookie = 'swatches='+swatches.join(',');
@@ -105,13 +106,20 @@ $(function(){
 		alpha: true,
 		alphaHex: true
 	});
+	$('#color5').colorpicker({
+		realtime: false,
+		alpha: true,
+		alphaHex: true,
+		allowNull: true,
+		color: null
+	});
 });
 
 function cookie(name){
 	var ca = document.cookie.split(/;\s*/);
 	for(var i = 0; i < ca.length; i++){
 		if(ca[i].indexOf(name + '=') == 0){
-			return ca[i].substring(name.length + 1, ca[i].length);
+			return ca[i].substring(name.length + 1);
 		}
 	}
 	return '';
