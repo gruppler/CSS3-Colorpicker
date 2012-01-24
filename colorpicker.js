@@ -384,7 +384,9 @@ $.extend(Colorpicker.prototype, {
 		if(typeof name == 'string'){
 			settings = {};
 			if(inst && name == 'color' && isset(value)){
-				value = value ? new this.color({hex:value}) : null;
+				var color = value ? new this.color({hex:value}) : new this.color({hex:this._defaults.color});
+				color.isNull = !value && this._get(inst, 'allowNull');
+				value = color;
 				this._setColor(inst, value, true);
 				this.addSwatch(value, true);
 			}
