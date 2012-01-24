@@ -1,6 +1,6 @@
 /*!
 CSS3 ColorPicker (https://github.com/gruppler/CSS3-Colorpicker)
-v1.3
+v1.3.1
 Copyright (c) 2011 Craig Laparo (https://plus.google.com/114746898337682206892)
 Based on "PhotoShop-like JavaScript Color Picker"
 Copyright (c) 2007 John Dyer (http://johndyer.name)
@@ -383,8 +383,8 @@ $.extend(Colorpicker.prototype, {
 		var settings = name || {};
 		if(typeof name == 'string'){
 			settings = {};
-			if(inst && name == 'color' && value){
-				value = new this.color({hex:value});
+			if(inst && name == 'color' && isset(value)){
+				value = value ? new this.color({hex:value}) : null;
 				this._setColor(inst, value, true);
 				this.addSwatch(value, true);
 			}
