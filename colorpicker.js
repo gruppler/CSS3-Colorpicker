@@ -559,6 +559,9 @@ $.extend(Colorpicker.prototype, {
 		inst.input.data('color', inst.color.isNull ? null : inst.color.hexa);
 		if(force || !inst.input.is(':focus')){
 			var val = inst.input.val();
+			if (val === false) {
+				val = '';
+			}
 			if(inst.color.isNull){
 				inst.input.val('');
 			}else{
