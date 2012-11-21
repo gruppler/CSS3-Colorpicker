@@ -242,6 +242,15 @@ $.extend(Colorpicker.prototype, {
 				this.setHex(args.hexa);
 			}else if('hex' in args){
 				this.setHex(args.hex);
+			}else if('rgb' in args) {
+				var m = args['rgb'].match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)/);
+				if (m) {
+					var a = 100;
+					if (typeof(m[4]) !== 'undefined') {
+						a = m[4];
+					} 
+					this.setRgb(m[1], m[2], m[3], a);
+				}
 			}else if('r' in args){
 				this.setRgb(args.r, args.g, args.b, args.a);
 			}else if('h' in args){
@@ -322,7 +331,11 @@ $.extend(Colorpicker.prototype, {
 			color.isNull = this._get(inst, 'allowNull');
 		}
 		if(typeof(color) == 'string' || typeof(color) == 'number'){
-			color = new $.colorpicker.color({hex:color});
+			if (color.match(/^rgb/)) {
+				color = new $.colorpicker.color({rgb:color});
+			} else {
+				color = new $.colorpicker.color({hex:color});
+			}
 		}
 
 		inst.settings.color = new $.colorpicker.color({hex:color.hexa});
