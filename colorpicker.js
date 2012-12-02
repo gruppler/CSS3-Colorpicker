@@ -792,7 +792,8 @@ $.extend(Colorpicker.prototype, {
 		}
 
 		if(!isset(color)){
-			var color = inst.color;
+			var color = inst.color,
+				isNull = color.isNull && this._get(inst, 'allowNull');
 		}else if(!color){
 			var isNull = this._get(inst, 'allowNull');
 			color = this._defaults.color;
