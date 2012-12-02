@@ -242,14 +242,14 @@ $.extend(Colorpicker.prototype, {
 				this.setHex(args.hexa);
 			}else if('hex' in args){
 				this.setHex(args.hex);
-			}else if('rgb' in args) {
-				var m = args['rgb'].match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)/);
-				if (m) {
+			}else if('rgb' in args){
+				var rgb = args.rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(0?\.?\d+))?\)/i);
+				if(rgb){
 					var a = 100;
-					if (typeof(m[4]) !== 'undefined') {
-						a = m[4];
+					if(typeof(rgb[4]) !== 'undefined'){
+						a *= rgb[4];
 					}
-					this.setRgb(m[1], m[2], m[3], a);
+					this.setRgb(rgb[1], rgb[2], rgb[3], a);
 				}
 			}else if('r' in args){
 				this.setRgb(args.r, args.g, args.b, args.a);
