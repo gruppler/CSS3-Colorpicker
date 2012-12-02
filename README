@@ -55,7 +55,7 @@ Options:
   showAnim:       true        // [true|false] to enable/disable animations
   duration:       200         // Fade duration
   color:          'FFF'       // Default color
-  allowNull:     false        // [true|false] to allow an empty color value;
+  allowNull:      false       // [true|false] to allow an empty color value;
                               //   otherwise default to the default color
   realtime:       true        // [true|false] to enable/disable instant updates
   invertControls: true        // [true|false] to enable/disable inverting color
