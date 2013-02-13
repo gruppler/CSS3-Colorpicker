@@ -31,36 +31,17 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h2>Legal stuff</h2>
+        <h1>About</h1>
 
-<p><strong>CSS3 ColorPicker</strong> (<a href="https://github.com/gruppler/CSS3-Colorpicker">https://github.com/gruppler/CSS3-Colorpicker</a>)<br>
-Copyright © 2011 Craig Laparo (<a href="https://plus.google.com/114746898337682206892">https://plus.google.com/114746898337682206892</a>)<br>
-Based on "PhotoShop-like JavaScript Color Picker"<br>
-Copyright © 2007 John Dyer (<a href="http://johndyer.name">http://johndyer.name</a>)<br>
-MIT style license<br></p>
+<p>After searching for several days for the perfect JavaScript color picker to use in an internal project (a web application that requires HTML5/CSS3), I stumbled upon <a href="http://j.hn/">John Dyer</a>'s "<a href="http://johndyer.name/post/PhotoShop-like-JavaScript-Color-Picker.aspx">PhotoShop-like JavaScript Color Picker</a>" from 2007. It was perfect. It had all the color modes I wanted, but it wasn't cluttered. Simple yet complete. And then I looked at the code.</p>
 
-<p>Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:</p>
+<p>Though he "refactored" it in 2009, I was a bit put off by the use of tables to build the layout, and a bit disappointed that the whole thing wasn't self-contained in a smaller package. And that it wasn't based on JQuery (since it was neither well-known nor refined at the time). So, I decided to make my own version, making use of CSS3 gradients, since for my purposes, it would be used in a project that already requires using a browser that supports these latest features.</p>
 
-<p>The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.</p>
+<p>I borrowed a lot of the code for converting between the different color modes as well as the Photoshop-like layout, but I built all the rest from scratch. Well, almost. I used the JQuery UI date picker as a boilerplate.</p>
 
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.</p>
+<hr><hr><h1>Documentation</h1>
 
-<h2>Documentation</h2>
+<p>Current version: <strong>v1.3.2</strong></p>
 
 <p>Include these in your header:</p>
 
@@ -149,7 +130,34 @@ $.colorpicker.validateHex('hex');
 // Create a color object
 var myColor = new $.colorpicker.color({hex: 'ccc'});</code></pre>
 
-<hr>
+<hr><hr><h1>Legal stuff</h1>
+
+<p><strong>CSS3 ColorPicker</strong> (<a href="https://github.com/gruppler/CSS3-Colorpicker">https://github.com/gruppler/CSS3-Colorpicker</a>)<br>
+Copyright © 2011 Craig Laparo (<a href="https://plus.google.com/114746898337682206892">https://plus.google.com/114746898337682206892</a>)<br>
+Based on "PhotoShop-like JavaScript Color Picker"<br>
+Copyright © 2007 John Dyer (<a href="http://johndyer.name">http://johndyer.name</a>)<br>
+MIT style license<br></p>
+
+<p>Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.</p>
       </section>
     </div>
 
