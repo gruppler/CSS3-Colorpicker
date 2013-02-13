@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="CSS3 Colorpicker : Finally, a decent color picker" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>CSS3 Colorpicker</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/gruppler/CSS3-Colorpicker">View on GitHub</a>
+
+          <h1 id="project_title">CSS3 Colorpicker</h1>
+          <h2 id="project_tagline">Finally, a decent color picker</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/gruppler/CSS3-Colorpicker/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/gruppler/CSS3-Colorpicker/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>Legal stuff</h2>
+
+<p><strong>CSS3 ColorPicker</strong> (<a href="https://github.com/gruppler/CSS3-Colorpicker">https://github.com/gruppler/CSS3-Colorpicker</a>)<br>
+Copyright © 2011 Craig Laparo (<a href="https://plus.google.com/114746898337682206892">https://plus.google.com/114746898337682206892</a>)<br>
+Based on "PhotoShop-like JavaScript Color Picker"<br>
+Copyright © 2007 John Dyer (<a href="http://johndyer.name">http://johndyer.name</a>)<br>
+MIT style license<br></p>
+
+<p>Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.</p>
+
+<h2>Documentation</h2>
+
+<p>Include these in your header:</p>
+
+<pre><code>&lt;link rel="stylesheet" type="text/css" href="colorpicker.css"/&gt;
+&lt;script type="text/javascript" src="jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="colorpicker.js"&gt;&lt;/script&gt;</code></pre>
+
+<p>Apply to your selection:</p>
+
+<pre><code>$('.color').colorpicker();
+$('#color1').colorpicker({
+    realtime: false,
+    invertControls: false,
+    controlStyle: 'raised'
+});</code></pre>
+
+<hr><h3>Options:</h3>
+
+<pre><code>showAnim:       true        // [true|false] to enable/disable animations
+duration:       200         // Fade duration
+color:          'FFF'       // Default color
+allowNull:      false       // [true|false] to allow an empty color value;
+                            //   otherwise default to the default color
+realtime:       true        // [true|false] to enable/disable instant updates
+invertControls: true        // [true|false] to enable/disable inverting color
+                            //   of mouse controls based on luminance
+controlStyle:   'simple'    // Mouse control theme [simple|raised|inset];
+                            //   separate multiple themes with a space
+swatches:       true        // [true|false] to enable/disable,
+                            //   or an array of hex codes to pre-fill
+alpha:          false       // [true|false] to enable/disable alpha
+alphaHex:       false       // [true|false] to enable/disable 4-byte hex
+                            //   in the format '#AARRGGBB'</code></pre>
+
+<p>Options can be retrieved or changed at any time:</p>
+
+<pre><code>// Get option's current value
+$(".selector").colorpicker("option", "color");
+
+// Set option
+$(".selector").colorpicker("option", "color", "fff");</code></pre>
+
+<hr><h3>Events:</h3>
+
+<pre><code>beforeShow(input, inst)       // Fired before the color picker is shown
+onClose(color, inst)          // Fired when the color picker is hidden
+onSelect(color, inst)         // Fired when the color is set
+onAddSwatch(color, swatches)  // Fired when a new color swatch is added</code></pre>
+
+<p>Event handlers can be set just like options:</p>
+
+<pre><code>// At initialization
+$(".selector").colorpicker({
+    onSelect: function(color, inst){...}
+});
+
+// After initialization
+$(".selector").colorpicker('option', 'onSelect', function(color, inst){...});</code></pre>
+
+<hr><h3>Public methods:</h3>
+
+<pre><code>setDefaults(settings)  // Set the defaults for all color pickers
+addSwatch(color, newOnly) // Add a color or array of colors to the swatches;
+                       //   preserve sorting if 'newOnly' is true
+clearSwatches()        // Remove all swatches
+refresh()              // Update the color picker
+color(args)            // A useful color class
+hexToRgb(hex, alphaOn) // Returns {r:[0-255], g:[0-255], b:[0-255], a:[0-100]}
+validateHex(hex, norm, alphaOn) // Returns a valid hex code,
+                       //   optionally normalized
+rgbToHex(rgb, alphaOn) // rgb = {r:[0-255], g:[0-255], b:[0-255], [a:[0-100]]}
+intToHex(dec)          // Base conversion from 10 to 16
+hextToInt(hex)         // Base conversion from 16 to 10
+rgbToLum(rgb)          // rgb = {r:[0-255], g:[0-255], b:[0-255]}
+                       //   Returns integer [0-100]
+rgbToHsv(rgb)          // rgb = {r:[0-255], g:[0-255], b:[0-255]}
+                       //   Returns {h:[0-359], s:[0-100], v:[0-100]}
+hsvToRgb(rgb)          // hsv = {h:[0-359], s:[0-100], v:[0-100]}
+                       //   Returns {r:[0-255], g:[0-255], b:[0-255]}</code></pre>
+
+<p>To use a public method, call it like this:</p>
+
+<pre><code>// Validate 'hex'
+$.colorpicker.validateHex('hex');
+
+// Create a color object
+var myColor = new $.colorpicker.color({hex: 'ccc'});</code></pre>
+
+<hr>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">CSS3 Colorpicker maintained by <a href="https://github.com/gruppler">gruppler</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
